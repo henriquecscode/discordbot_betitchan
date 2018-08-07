@@ -146,16 +146,19 @@ client.on("message", (message) => { //When there is a message in the server, get
 
                     if(umuser.roles.has(muterole.id)){
                         umuser.removeRole(muterole.id);
-                        return message.channel.send(`${umuser} has been unmuted`);
+                        return message.channel.send(`${umuser} you can Shaberu now! :3`);
                     }
                     else{
-                        return message.channel.send("User was not muted");
+                        return message.channel.send(`${sender.umuser} This Stromer can Shaberu! You said that! .-.`);
                     }
+                }
+                else {
+                    return message.channel.send(`${sender} Trying to unmute someone who's stronger that you? How cute :>`);
                 }
             }
 
             else {
-                return message.channel.send("You don't have the permissions");
+                return message.channel.send(`${sender} Oni-chan, you don't have permission to use this command, wari ;-;`);
             }
         }
 
