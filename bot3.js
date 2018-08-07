@@ -38,7 +38,7 @@ function Chansmessages(usermessage)
             return "2Bee is cool!";
         case "devaster":
             index = Math.floor(Math.random() * adevaster.length);
-            return devaster[index];
+            return adevaster[index];
         case "neko":
             index = Math.floor(Math.random() * aneko.length); //Randomizes a number bettwen 0 and the size of the aneko - 1
             return aneko[index];
