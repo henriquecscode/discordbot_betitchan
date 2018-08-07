@@ -5,41 +5,72 @@ var prefix = "-chan" //The prefix that must be inplace before every message. Cha
 var prefixlenght = prefix.length
 
 var commands = [
+    [
     "ping",
+    "pong"
+    ],
+
+    [
     "stromi",
-    "help",
+    "2Bee is cool"
+    ],
+
+    [
+    "neko",
+    "https://cdn.discordapp.com/attachments/476134769160355871/476384779235885097/latest.png",
+    "https://cdn.discordapp.com/attachments/476134769160355871/476384816393093130/main-qimg-d658e310e79b5f5218c84efa57b4ca37.png",
+    "https://cdn.discordapp.com/attachments/476134769160355871/476384857543540736/images.png",
+    "https://cdn.discordapp.com/attachments/476134769160355871/476384885389525002/5c7d8589d338b29f6d785150be01a546.png",
+    "https://cdn.discordapp.com/attachments/476134769160355871/476384922462978058/4476fae0ce8e29378ecf3c04e056e915.png",
+    "https://cdn.discordapp.com/attachments/476134769160355871/476384966369083423/AF84E58430B8AF52E540B9DD849F1F93381E9924.png"
+    ],
+    
+    [
     "devaster",
-    "neko"
+    "https://cdn.discordapp.com/attachments/476111531512299521/476399145817473048/DAngry.png",
+    "https://cdn.discordapp.com/attachments/476111531512299521/476399147390337058/DCool.png",
+    "https://cdn.discordapp.com/attachments/476111531512299521/476399148652822528/DGun.png",
+    "https://cdn.discordapp.com/attachments/476111531512299521/476399149944668180/DHappy.png",
+    "https://cdn.discordapp.com/attachments/476111531512299521/476399150930329600/DNervous.png",
+    "https://cdn.discordapp.com/attachments/476111531512299521/476399152058728458/DPing.png",
+    "https://cdn.discordapp.com/attachments/476111531512299521/476399155800178720/DScared.png",
+    "https://cdn.discordapp.com/attachments/476111531512299521/476399158673014805/DSuprised.png",
+    "https://cdn.discordapp.com/attachments/476111531512299521/476399153317150722/DSad.png",
+    "https://cdn.discordapp.com/attachments/476111531512299521/476399161206636544/Emoji_Dab.png"
+    ]
+
 ];
+//2d array that contains the functionality of each function
+//Each row's first element contains the string with the name of the command
+//The other elements of the row are the possile answers
+//Edit this to add more commands
+
+
 //Might be used to call the switch function so it is easier to display the help
 
 function Chansmessages(usermessage)
 {
-    var aneko = [
-        "https://cdn.discordapp.com/attachments/476134769160355871/476384779235885097/latest.png",
-        "https://cdn.discordapp.com/attachments/476134769160355871/476384816393093130/main-qimg-d658e310e79b5f5218c84efa57b4ca37.png",
-        "https://cdn.discordapp.com/attachments/476134769160355871/476384857543540736/images.png",
-        "https://cdn.discordapp.com/attachments/476134769160355871/476384885389525002/5c7d8589d338b29f6d785150be01a546.png",
-        "https://cdn.discordapp.com/attachments/476134769160355871/476384922462978058/4476fae0ce8e29378ecf3c04e056e915.png",
-        "https://cdn.discordapp.com/attachments/476134769160355871/476384966369083423/AF84E58430B8AF52E540B9DD849F1F93381E9924.png"
-    ];
-     //Post links for neko case here
-     var adevaster = [
-         "https://cdn.discordapp.com/attachments/476111531512299521/476399145817473048/DAngry.png",
-         "https://cdn.discordapp.com/attachments/476111531512299521/476399147390337058/DCool.png",
-         "https://cdn.discordapp.com/attachments/476111531512299521/476399148652822528/DGun.png",
-         "https://cdn.discordapp.com/attachments/476111531512299521/476399149944668180/DHappy.png",
-         "https://cdn.discordapp.com/attachments/476111531512299521/476399150930329600/DNervous.png",
-         "https://cdn.discordapp.com/attachments/476111531512299521/476399152058728458/DPing.png",
-         "https://cdn.discordapp.com/attachments/476111531512299521/476399155800178720/DScared.png",
-         "https://cdn.discordapp.com/attachments/476111531512299521/476399158673014805/DSuprised.png",
-         "https://cdn.discordapp.com/attachments/476111531512299521/476399153317150722/DSad.png",
-         "https://cdn.discordapp.com/attachments/476111531512299521/476399161206636544/Emoji_Dab.png"
-     ];
 
     var index; //Used to randomize when having mulitple return options
 
     usermessage = usermessage.slice(prefixlenght+1); //Removes the prefix so we can work with the other part of the message
+    
+    for(var i = 0; i < commands.length;i++) //Runs through all commands' elements to see if the message coincides with any function of the bot
+    {
+        if(usermessage === commands[i][0]){ //Checks if the command is the same as in the commands[i][0] array
+            index = Math.floor(Math.random() * (commands[i].length-1) + 1); //Randomizes an index between the 2nd element and the last
+            return commands[i][index]; //Returns the correspondent string to that index
+        }
+    }
+
+    if(usermessage === "") //There is nothing after the command
+    {
+        return "Oni-Chan please put your command!";
+    }
+    else{ //Last case scenario where the string put after the prefix is not recognized
+        return "Oni-Chan my Sensei didn't add this command!";
+    }
+/*
     switch(usermessage){
         case "ping": //Just a test command for now
             return "pong!";
@@ -57,7 +88,7 @@ function Chansmessages(usermessage)
             return "Oni-Chan please put your command!";
         default:
             return "Oni-Chan my Sensei didn't add this command!";
-    }
+    }*/
 }
 //Controls the bot's answers
 
@@ -141,12 +172,6 @@ client.on("message", (message) => { //When there is a message in the server, get
 
             }
 
-            //HELP
-            else if(message.content.startsWith(`${prefix} help`))
-            {
-
-            }
-
             else {
                 return message.channel.send( `${sender} Oni-chan, you don't have permission to use this command, wari ;-;`);
             }
@@ -177,6 +202,24 @@ client.on("message", (message) => { //When there is a message in the server, get
             else {
                 return message.channel.send(`${sender} Oni-chan, you don't have permission to use this command, wari ;-;`);
             }
+        }
+
+        else if(message.content === `${prefix}`) //The user has just put -chan
+        {
+            return message.channel.send(`${sender} Do **-chan help** and you sensei will guide you!` )
+        }
+
+         //HELP
+        else if(message.content.startsWith(`${prefix} help`))
+        {
+            var allcommandsstring = "";
+            message.channel.send("Here is a list of what you can do, Oni-chan");
+            for(var i = 0; i < commands.length; i++)
+            {
+                allcommandsstring += "**" + commands[i][0] + "**" + '\n'; //Makes so each new command is in bold and is succeeded by a new line
+            }
+            message.channel.send(allcommandsstring);
+            //Outputs the multiple commands: the first element of each row of the commands 2d array
         }
 
         else {
