@@ -4,6 +4,15 @@ const client = new Discord.Client();
 var prefix = "-chan" //The prefix that must be inplace before every message. Change here if tired of previous one
 var prefixlenght = prefix.length
 
+var commands = [
+    "ping",
+    "stromi",
+    "help",
+    "devaster",
+    "neko"
+];
+//Might be used to call the switch function so it is easier to display the help
+
 function Chansmessages(usermessage)
 {
     var aneko = [
@@ -129,6 +138,12 @@ client.on("message", (message) => { //When there is a message in the server, get
                 else {
                     return message.channel.send(`${sender} Trying to mute someone who's stronger that you? >>>///<<<`);
                 }
+
+            }
+
+            //HELP
+            else if(message.content.startsWith(`${prefix} help`))
+            {
 
             }
 
