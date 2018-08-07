@@ -63,13 +63,9 @@ function Chansmessages(usermessage)
         }
     }
 
-    if(usermessage === "") //There is nothing after the command
-    {
-        return "Oni-Chan please put your command!";
-    }
-    else{ //Last case scenario where the string put after the prefix is not recognized
-        return "Oni-Chan my Sensei didn't add this command!";
-    }
+     //Last case scenario where the string put after the prefix is not recognized
+    return "Oni-Chan my Sensei didn't add this command!";
+    
 /*
     switch(usermessage){
         case "ping": //Just a test command for now
@@ -204,16 +200,17 @@ client.on("message", (message) => { //When there is a message in the server, get
             }
         }
 
+        //No command
         else if(message.content === `${prefix}`) //The user has just put -chan
         {
             return message.channel.send(`${sender} Do **-chan help** and you sensei will guide you!` )
         }
 
-         //HELP
+        //HELP
         else if(message.content.startsWith(`${prefix} help`))
         {
             var allcommandsstring = "";
-            message.channel.send("Here is a list of what you can do, Oni-chan");
+            message.channel.send(`${sender} Here is a list of what you can do`);
             for(var i = 0; i < commands.length; i++)
             {
                 allcommandsstring += "**" + commands[i][0] + "**" + '\n'; //Makes so each new command is in bold and is succeeded by a new line
