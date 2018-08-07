@@ -36,6 +36,8 @@ function Chansmessages(usermessage)
             return "pong!";
         case "Stromi":
             return "2Bee is cool!";
+        case "Help":
+            return "Will get added soon";
         case "devaster":
             index = Math.floor(Math.random() * adevaster.length);
             return adevaster[index];
