@@ -15,7 +15,7 @@ function Chansmessages(usermessage)
         "https://cdn.discordapp.com/attachments/476134769160355871/476384966369083423/AF84E58430B8AF52E540B9DD849F1F93381E9924.png"
     ];
      //Post links for neko case here
-     var devaster = [
+     var adevaster = [
          "https://cdn.discordapp.com/attachments/476111531512299521/476399145817473048/DAngry.png",
          "https://cdn.discordapp.com/attachments/476111531512299521/476399147390337058/DCool.png",
          "https://cdn.discordapp.com/attachments/476111531512299521/476399148652822528/DGun.png",
@@ -37,7 +37,7 @@ function Chansmessages(usermessage)
         case "Stromi":
             return "2Bee is cool!";
         case "devaster":
-            index = Math.floor(Math.random() * devaster.length);
+            index = Math.floor(Math.random() * adevaster.length);
             return devaster[index];
         case "neko":
             index = Math.floor(Math.random() * aneko.length); //Randomizes a number bettwen 0 and the size of the aneko - 1
