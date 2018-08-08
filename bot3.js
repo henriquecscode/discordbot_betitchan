@@ -1,4 +1,4 @@
-console.log("We are online"); //Checks if it is running in the http server
+console.log("Online KITA!"); //Checks if it is running in the http server
 
 const Discord = require("discord.js");
 const client = new Discord.Client();
