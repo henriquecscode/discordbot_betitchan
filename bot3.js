@@ -211,18 +211,18 @@ client.on("message", (message) => { //When there is a message in the server, get
                     let numbertodelete = message.content.slice(prefixlenght + 8); //8 is the size of the " delete "
 
                     if(message.content === `${prefix} delete` || isNaN(numbertodelete)){ //The user didn't specify a valid number or just posted "-chan delete"
-                        return message.channel.send("Specify a number");
+                        return message.channel.send(`${sender} Oni-Chan, please tell me how many messages should I delete 8.8!`);
                     }
                     else{
                         message.delete(); //Deletes the command message
                         todelete = await message.channel.fetchMessages({limit: numbertodelete}); //Grabs the last "numbertodelete" messages in the channel
-                        message.channel.send(`Deleted ${todelete.size} messages`); // Lets post into console how many messages we are deleting)
+                        message.channel.send(`**Nii-Chan I've deleted ${todelete.size} baka messages for you!**`); // Lets post into console how many messages we are deleting)
                         message.channel.bulkDelete(todelete); //Delete the messages
                     }
                 }
 
                 else{ //The sender does not have the permissions
-                    return message.channel.send("");
+                    return message.channel.send(`${sender} Oni-chan, you don't have permission to use this command, wari ;-;`);
                 }
             }
             deletemessages(); //Runs the function we have just defined
