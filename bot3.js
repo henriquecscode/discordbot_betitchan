@@ -202,11 +202,11 @@ client.on("message", (message) => { //When there is a message in the server, get
             }
         }
 
-        //PURGE
-        else if (message.content.startsWith(`${prefix} delete`)){{
+        //DELETE
+        else if (message.content.startsWith(`${prefix} delete`)){
             console.log("Delete detected");
 
-            async function delete(){ //Creates an async function so we can use the await command
+            async function deletemessages(){ //Creates an async function so we can use the await command
                 message.delete(); //Deletes the command message
 
                 if(sender.hasPermission("MANAGE_MESSAGES")){ //The sender can indeed delete messages
@@ -225,7 +225,7 @@ client.on("message", (message) => { //When there is a message in the server, get
                     return message.channel.send("");
                 }
             }
-            delete(); //Runs the function we have just defined
+            deletemessages(); //Runs the function we have just defined
         }
 
         //No command
