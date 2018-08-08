@@ -246,8 +246,8 @@ client.on("message", (message) => { //When there is a message in the server, get
             console.log("Add role detected");
 
             if (sender.hasPermission("ADMINISTRATOR")) { //Checks if the sender has the permission to add a role
-                adduser = message.mentions.members.first(); //Gets the user to which the role is going to be added
-                addrole = message.mentions.roles.first(); //Gets the role that is going to be added
+                let adduser = message.mentions.members.first(); //Gets the user to which the role is going to be added
+                let addrole = message.mentions.roles.first(); //Gets the role that is going to be added
 
                 if (!adduser || !addrole) { //There was a error
                     return message.channel.send(`${sender} Nii-Chan! You did something wrong! Baka! Q-Q`);
@@ -278,8 +278,8 @@ client.on("message", (message) => { //When there is a message in the server, get
             console.log("Remove role detected");
 
             if (sender.hasPermission("ADMINISTRATOR")) { //Checks if the sender has the permission to removed a role
-                removeuser = message.mentions.members.first(); //Gets the user to which the role is going to be removed
-                removerole = message.mentions.roles.first(); //Gets the role that is going to be removed
+                let removeuser = message.mentions.members.first(); //Gets the user to which the role is going to be removed
+                let removerole = message.mentions.roles.first(); //Gets the role that is going to be removed
 
                 if (!removeuser || !removerole) { //There was a error
                     return message.channel.send(`${sender} Nii-Chan! You did something wrong! Baka! Q-Q`);
