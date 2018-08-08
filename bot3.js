@@ -1,5 +1,6 @@
+require('dotenv').load(); //DONT PASS THIS LINE INTO GLITCH.COM SINCE IT ALREADY GETS THE .ENV FILE
+
 console.log("Online KITA");
-require('dotenv').load();
 const Discord = require("discord.js");
 const client = new Discord.Client();
 //require('http').createServer().listen(3000)//So the bot doesn't shut off after some time of innactivity: Used for hosting
@@ -224,9 +225,10 @@ client.on("message", (message) => { //When there is a message in the server, get
                     }
                     else {
                         message.delete(); //Deletes the command message
-                        todelete = await message.channel.fetchMessages({ limit: numbertodelete }); //Grabs the last "numbertodelete" messages in the channel
+                        let todelete = await message.channel.fetchMessages({ limit: numbertodelete }); //Grabs the last "numbertodelete" messages in the channel
                         message.channel.send(`**Nii-Chan I've deleted ${todelete.size} baka messages for you!**`); // Lets post into console how many messages we are deleting)
-                        message.channel.bulkDelete(todelete); //Delete the messages
+                        message.channel.bulkDelete(todelete) //Delete the messages
+                        .catch(error => console.error(err)); //Catches any errors
 
                     }
                 }
