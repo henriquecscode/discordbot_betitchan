@@ -20,7 +20,7 @@ var commands = [
 
     [
     "Neko",
-    "Sends a neko nyan~",
+    "Sends a neko nyan",
     "https://cdn.discordapp.com/attachments/476134769160355871/476384779235885097/latest.png",
     "https://cdn.discordapp.com/attachments/476134769160355871/476384816393093130/main-qimg-d658e310e79b5f5218c84efa57b4ca37.png",
     "https://cdn.discordapp.com/attachments/476134769160355871/476384857543540736/images.png",
@@ -223,6 +223,7 @@ client.on("message", (message) => { //When there is a message in the server, get
             {
                 allcommandsstring += "**" + commands[i][0] + "**" + " ~" + commands[i][1] + "~" + '\n'; //Makes so each new command is in bold, followed by its description and is succeeded by a new line
             }
+            allcommandsstring += "Oni-Chan, these are all the bots the you can use Imada :3";
             message.channel.send(allcommandsstring);
             //Outputs the multiple commands: the first element of each row of the commands 2d array
         }
