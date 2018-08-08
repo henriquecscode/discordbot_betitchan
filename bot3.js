@@ -1,12 +1,11 @@
-import dotenv from 'dotenv'
-dotenv.config()
+require('dotenv').load();
 
 console.log("We are online"); //Checks if it is running in the http server
 
 const Discord = require("discord.js");
 const client = new Discord.Client();
 
-require('http').createServer().listen(3000)//So the bot doesn't shut off after some time of innactivity: Used for hosting
+//require('http').createServer().listen(3000)//So the bot doesn't shut off after some time of innactivity: Used for hosting
 
 var prefix = "-chan" //The prefix that must be inplace before every message. Change here if tired of previous one
 var prefixlenght = prefix.length
@@ -207,17 +206,18 @@ client.on("message", (message) => { //When there is a message in the server, get
             console.log("Delete detected");
 
             async function deletemessages(){ //Creates an async function so we can use the await command
-                message.delete(); //Deletes the command message
 
                 if(sender.hasPermission("MANAGE_MESSAGES")){ //The sender can indeed delete messages
                     let numbertodelete = message.content.slice(prefixlenght + 8); //8 is the size of the " delete "
-
-                    if(isNaN(numbertodelete)){ //The user didn't specify a valid number
-                        return message.channel.send("");
+                    
+                    if(message.content === `${prefix} delete` || isNaN(numbertodelete)){ //The user didn't specify a valid number or just posted "-chan delete"
+                        return message.channel.send("Specify a number");
                     }
                     else{
+                        message.delete(); //Deletes the command message
                         todelete = await message.channel.fetchMessages({limit: numbertodelete}); //Grabs the last "numbertodelete" messages in the channel
-                        message.channel.bulkDelete(todelete); //Deletes the messages
+                        console.log(todelete.size + ' messages found, deleting...'); // Lets post into console how many messages we are deleting)
+                        message.channel.bulkDelete(todelete); //Delete the messages
                     }
                 }
 
