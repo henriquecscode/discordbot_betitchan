@@ -1,5 +1,3 @@
-require('dotenv').load();
-
 console.log("We are online"); //Checks if it is running in the http server
 
 const Discord = require("discord.js");
@@ -256,4 +254,4 @@ client.on("message", (message) => { //When there is a message in the server, get
 
 });
 
-client.login(process.env.TOKEN);//Gets the token from the .env file
+client.login("NDc2MzcxNjgyOTA3NTIxMDM1.DkyZVg.6klOz7z1uCznaC03qiC8eJFMb9Y");//Initializes using the token
