@@ -13,11 +13,13 @@ var commands = [
     "It will send the Devast.io link!",
     "http://devast.io"
     ],
+
     [
     "Starve",
     "It will send the Starve.io link!",
     "http://starve.io"
     ],
+    
     [
     "Ping",
     "It will send to you the Pong",
