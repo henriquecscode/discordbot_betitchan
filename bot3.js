@@ -209,14 +209,14 @@ client.on("message", (message) => { //When there is a message in the server, get
 
                 if(sender.hasPermission("MANAGE_MESSAGES")){ //The sender can indeed delete messages
                     let numbertodelete = message.content.slice(prefixlenght + 8); //8 is the size of the " delete "
-                    
+
                     if(message.content === `${prefix} delete` || isNaN(numbertodelete)){ //The user didn't specify a valid number or just posted "-chan delete"
                         return message.channel.send("Specify a number");
                     }
                     else{
                         message.delete(); //Deletes the command message
                         todelete = await message.channel.fetchMessages({limit: numbertodelete}); //Grabs the last "numbertodelete" messages in the channel
-                        console.log(todelete.size + ' messages found, deleting...'); // Lets post into console how many messages we are deleting)
+                        message.channel.send(`Deleted ${todelete.size} messages`); // Lets post into console how many messages we are deleting)
                         message.channel.bulkDelete(todelete); //Delete the messages
                     }
                 }
