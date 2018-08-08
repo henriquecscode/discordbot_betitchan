@@ -1,7 +1,6 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
 
-var sender;
 var prefix = "-chan" //The prefix that must be inplace before every message. Change here if tired of previous one
 var prefixlenght = prefix.length
 
@@ -98,7 +97,7 @@ client.on("ready", () => {
 client.on("message", (message) => { //When there is a message in the server, gets an event and stores the message
 
     message.content = message.content.toLowerCase();//Makes the message case insensitive
-    
+
     if (message.content.startsWith(`${prefix}`)) { //Only executes if it is a message to the bot
         let sender = message.member;
 
@@ -224,7 +223,7 @@ client.on("message", (message) => { //When there is a message in the server, get
         }
 
         else {
-            return message.channel.send(Chansmessages(message.content));
+            return message.channel.send(Chansmessages(message));
         }
 
     }
