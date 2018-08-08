@@ -1,3 +1,4 @@
+require('dotenv').load();
 const Discord = require("discord.js");
 const client = new Discord.Client();
 
@@ -242,7 +243,7 @@ client.on("message", (message) => { //When there is a message in the server, get
 
 });
 
-client.login("NDc2MzcxNjgyOTA3NTIxMDM1.Dkx5cg.AZmbkFC1fB4OD7hzErfmqhONKsE");
+client.login(process.env.TOKEN);
 
 /*client.on("message", (message) => { //When there is a message in the server, gets an event and stores the message
     if (message.content.startsWith(prefix +  " ping")) {
