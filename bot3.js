@@ -92,6 +92,7 @@ client.on("ready", () => {
 
 client.on("message", (message) => { //When there is a message in the server, gets an event and stores the message
 
+    message.channel.send("I am here finally"); //Some debugging for the hosting
     message.content = message.content.toLowerCase();//Makes the message case insensitive
 
     if (message.content.startsWith(`${prefix}`)) { //Only executes if it is a message to the bot
