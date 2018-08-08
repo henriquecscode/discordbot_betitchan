@@ -7,6 +7,15 @@ var prefixlenght = prefix.length
 var commands = [
 
     [
+    "Help",
+    `${sender} Oni-Chan, you can use these commands :3
+    **Ping** It will send to you the Pong~
+    **Stromi** 2Bee is the best!
+    **Neko** Sends a neko nyan~
+    **Devaster** Sends a Devaster Emoji, more coming soon!~~
+    These are all the commands that you can use for now~`
+    ],
+    [
     "Ping",
     "pong"
     ],
@@ -206,7 +215,7 @@ client.on("message", (message) => { //When there is a message in the server, get
         //No command
         else if(message.content === `${prefix}`) //The user has just put -chan
         {
-            return message.channel.send(`${sender} Do **-chan help** and you sensei will guide you!` )
+            return message.channel.send(`${sender} Type **-chan help** and Betit-Chan will guide you!` )
         }
 
         //HELP
@@ -230,7 +239,7 @@ client.on("message", (message) => { //When there is a message in the server, get
 
 });
 
-client.login("NDc2MzcxNjgyOTA3NTIxMDM1.Dks9kQ._BNhJeeDsaALd2CA0MtvwkfkHJo");
+client.login("NDc2MzcxNjgyOTA3NTIxMDM1.Dkx5cg.AZmbkFC1fB4OD7hzErfmqhONKsE");
 
 /*client.on("message", (message) => { //When there is a message in the server, gets an event and stores the message
     if (message.content.startsWith(prefix +  " ping")) {
