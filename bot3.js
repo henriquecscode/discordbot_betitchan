@@ -1,4 +1,3 @@
-console.log("Online KITA!"); //Checks if it is running in the http server
 
 const Discord = require("discord.js");
 const client = new Discord.Client();
@@ -92,7 +91,6 @@ client.on("ready", () => {
 
 client.on("message", (message) => { //When there is a message in the server, gets an event and stores the message
 
-    message.channel.send("I am here finally"); //Some debugging for the hosting
     message.content = message.content.toLowerCase();//Makes the message case insensitive
 
     if (message.content.startsWith(`${prefix}`)) { //Only executes if it is a message to the bot
@@ -217,6 +215,7 @@ client.on("message", (message) => { //When there is a message in the server, get
                         todelete = await message.channel.fetchMessages({limit: numbertodelete}); //Grabs the last "numbertodelete" messages in the channel
                         message.channel.send(`**Nii-Chan I've deleted ${todelete.size} baka messages for you!**`); // Lets post into console how many messages we are deleting)
                         message.channel.bulkDelete(todelete); //Delete the messages
+
                     }
                 }
 
