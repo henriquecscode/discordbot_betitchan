@@ -41,7 +41,13 @@ var commands = [
     "https://cdn.discordapp.com/attachments/476111531512299521/476399155800178720/DScared.png",
     "https://cdn.discordapp.com/attachments/476111531512299521/476399158673014805/DSuprised.png",
     "https://cdn.discordapp.com/attachments/476111531512299521/476399153317150722/DSad.png",
-    "https://cdn.discordapp.com/attachments/476111531512299521/476399161206636544/Emoji_Dab.png"
+    "https://cdn.discordapp.com/attachments/476111531512299521/476399161206636544/Emoji_Dab.png",
+    "https://cdn.discordapp.com/emojis/476483742265901066.png?v=1",
+    "https://cdn.discordapp.com/emojis/476483022716272640.png?v=1",
+    "https://cdn.discordapp.com/emojis/476483022238253069.png?v=1",
+    "https://cdn.discordapp.com/emojis/476483022808416256.png?v=1",
+    "https://cdn.discordapp.com/emojis/476483023274246180.png?v=1"
+
     ]
 
 ];
