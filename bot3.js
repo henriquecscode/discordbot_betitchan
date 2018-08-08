@@ -229,7 +229,7 @@ client.on("message", (message) => { //When there is a message in the server, get
         }
 
         else {
-            return message.channel.send(Chansmessages(message));
+            return message.channel.send(Chansmessages(message.content));
         }
 
     }
