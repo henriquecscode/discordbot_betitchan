@@ -1,7 +1,7 @@
+console.log("I am being hosted");
 
 const Discord = require("discord.js");
 const client = new Discord.Client();
-
 //require('http').createServer().listen(3000)//So the bot doesn't shut off after some time of innactivity: Used for hosting
 
 var prefix = "-chan" //The prefix that must be inplace before every message. Change here if tired of previous one
@@ -226,15 +226,40 @@ client.on("message", (message) => { //When there is a message in the server, get
             deletemessages(); //Runs the function we have just defined
         }
 
+        //ADD ROLE
+        else if (message.content.startsWith(`${prefix} addrole`)) {
+            if(sender.hasPermission("ADMINISTRATOR")){ //Checks if the sender has the permission to add a role
+                adduser = message.mentions.members.first(); //Gets the user to which the role is going to be added
+                addrole = message.mentions.members.first(2); //Gets the role that is going to be added
+
+                if(!adduser || !addrole) { //There was a error
+                    return message.channel.send("An error occurred: Check your mentions");
+                }
+                else{ //No error in the mentions
+                    if(!adduser.roles.has(addrole.id)){ //The user does not have the role: it can be added
+                    adduser.addRole(addrole);
+                    return message.channel.send(`Congratulations ${adduser}! You have just received the role ${addrole}`);
+                    }
+                    else{
+                        return message.channel.send(`${adduser} allready has ${addrole}`);
+                    }
+                }
+            }
+            else{ //Sender does not have permission
+                return message.channel.send("You don't have such permissions"); //
+            }
+            return message.channel.send(`${addrole}`);
+        }
+
         //No command
-        else if(message.content === `${prefix}`) //The user has just put -chan
+        else if (message.content === `${prefix}`) //The user has just put -chan
         {
             return message.channel.send(`${sender} Don't know the commands Nii-Chan? Type **-chan Help** and it will tell you the common commands! Bakatshi o>o` );
         }
 
         //HELP
-        else if(message.content.startsWith(`${prefix} help`))
-        {
+        else if(message.content.startsWith(`${prefix} help`)){
+        
             var allcommandsstring = "";
             message.channel.send(`${sender} Here is a list of what you can do`);
             for(var i = 0; i < commands.length; i++)
@@ -254,4 +279,4 @@ client.on("message", (message) => { //When there is a message in the server, get
 
 });
 
-client.login("NDc2MzcxNjgyOTA3NTIxMDM1.DkyZVg.6klOz7z1uCznaC03qiC8eJFMb9Y");//Initializes using the token
+client.login("NDc2MzcxNjgyOTA3NTIxMDM1.DkyZVg.6klOz7z1uCznaC03qiC8eJFMb9Y");//Logs in using the token
