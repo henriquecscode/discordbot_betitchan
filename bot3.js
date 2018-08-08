@@ -1,4 +1,8 @@
-require('dotenv').load();
+import dotenv from 'dotenv'
+dotenv.config()
+
+console.log("We are online"); //Checks if it is running in the http server
+
 const Discord = require("discord.js");
 const client = new Discord.Client();
 
@@ -196,6 +200,32 @@ client.on("message", (message) => { //When there is a message in the server, get
             else {
                 return message.channel.send(`${sender} Oni-chan, you don't have permission to use this command, wari ;-;`);
             }
+        }
+
+        //PURGE
+        else if (message.content.startsWith(`${prefix} delete`)){{
+            console.log("Delete detected");
+
+            async function delete(){ //Creates an async function so we can use the await command
+                message.delete(); //Deletes the command message
+
+                if(sender.hasPermission("MANAGE_MESSAGES")){ //The sender can indeed delete messages
+                    let numbertodelete = message.content.slice(prefixlenght + 8); //8 is the size of the " delete "
+
+                    if(isNaN(numbertodelete)){ //The user didn't specify a valid number
+                        return message.channel.send("");
+                    }
+                    else{
+                        todelete = await message.channel.fetchMessages({limit: numbertodelete}); //Grabs the last "numbertodelete" messages in the channel
+                        message.channel.bulkDelete(todelete); //Deletes the messages
+                    }
+                }
+
+                else{ //The sender does not have the permissions
+                    return message.channel.send("");
+                }
+            }
+            delete(); //Runs the function we have just defined
         }
 
         //No command
