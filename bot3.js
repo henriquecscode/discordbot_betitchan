@@ -1,10 +1,12 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
 
+var sender;
 var prefix = "-chan" //The prefix that must be inplace before every message. Change here if tired of previous one
 var prefixlenght = prefix.length
 
 var commands = [
+
     [
     "Help",
     `${sender} Oni-Chan, you can use these commands :3
@@ -15,17 +17,17 @@ var commands = [
     These are all the commands that you can use for now~`
     ],
     [
-    "ping",
+    "Ping",
     "pong"
     ],
 
     [
-    "stromi",
+    "Stromi",
     "2Bee is cool"
     ],
 
     [
-    "neko",
+    "Neko",
     "https://cdn.discordapp.com/attachments/476134769160355871/476384779235885097/latest.png",
     "https://cdn.discordapp.com/attachments/476134769160355871/476384816393093130/main-qimg-d658e310e79b5f5218c84efa57b4ca37.png",
     "https://cdn.discordapp.com/attachments/476134769160355871/476384857543540736/images.png",
@@ -35,7 +37,7 @@ var commands = [
     ],
     
     [
-    "devaster",
+    "Devaster",
     "https://cdn.discordapp.com/attachments/476111531512299521/476399145817473048/DAngry.png",
     "https://cdn.discordapp.com/attachments/476111531512299521/476399147390337058/DCool.png",
     "https://cdn.discordapp.com/attachments/476111531512299521/476399148652822528/DGun.png",
@@ -66,7 +68,7 @@ function Chansmessages(usermessage)
     
     for(var i = 0; i < commands.length;i++) //Runs through all commands' elements to see if the message coincides with any function of the bot
     {
-        if(usermessage === commands[i][0]){ //Checks if the command is the same as in the commands[i][0] array
+        if(usermessage === commands[i][0].toLowerCase()){ //Checks if the command is the same as in the commands[i][0] array
             index = Math.floor(Math.random() * (commands[i].length-1) + 1); //Randomizes an index between the 2nd element and the last
             return commands[i][index]; //Returns the correspondent string to that index
         }
@@ -103,7 +105,9 @@ client.on("ready", () => {
 //Outputs "Watashiwa KITA!" in the console when running the code
 
 client.on("message", (message) => { //When there is a message in the server, gets an event and stores the message
+
     message.content = message.content.toLowerCase();//Makes the message case insensitive
+    
     if (message.content.startsWith(`${prefix}`)) { //Only executes if it is a message to the bot
         let sender = message.member;
 
