@@ -1,5 +1,5 @@
 console.log("Online KITA");
-
+require('dotenv').load();
 const Discord = require("discord.js");
 const client = new Discord.Client();
 //require('http').createServer().listen(3000)//So the bot doesn't shut off after some time of innactivity: Used for hosting
@@ -298,4 +298,4 @@ client.on("message", (message) => { //When there is a message in the server, get
 
 });
 
-client.login("NDc2MzcxNjgyOTA3NTIxMDM1.DkyZVg.6klOz7z1uCznaC03qiC8eJFMb9Y");//Logs in using the token
+client.login(process.env.TOKEN);//Logs in using the token
