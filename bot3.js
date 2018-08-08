@@ -104,7 +104,7 @@ client.on("message", (message) => { //When there is a message in the server, get
     message.content = message.content.toLowerCase();//Makes the message case insensitive
 
     if (message.content.startsWith(`${prefix}`)) { //Only executes if it is a message to the bot
-        
+
         let sender = message.member; //The sender is who sent the message
         let cont = message.content.slice(prefix.length).split(" "); // This variable slices off the prefix, then puts the rest in an array based off the spaces
         let args = cont.slice(1); // This slices off the command in cont, only leaving the arguments.
@@ -240,32 +240,27 @@ client.on("message", (message) => { //When there is a message in the server, get
 
         //ADD ROLE
         else if (message.content.startsWith(`${prefix} addrole`)) {
+
             console.log("Add role detected");
 
             if (sender.hasPermission("ADMINISTRATOR")) { //Checks if the sender has the permission to add a role
-                console.log("Promise before the declaration");
                 adduser = message.mentions.members.first(); //Gets the user to which the role is going to be added
-                console.log("User declarated");
-                addrole = message.mentions.roles.first(2); //Gets the role that is going to be added
-                console.log("Role declarated");
+                addrole = message.mentions.roles.first(); //Gets the role that is going to be added
 
                 if (!adduser || !addrole) { //There was a error
-                    console.log("Inexistent user or role");
                     return message.channel.send("An error occurred: Check your mentions");
                 }
                 else { //No error in the mentions
-                    console.log("Role and user exist");
-                    if (!adduser.roles.has(addrole.id)) { //The user does not have the role: it can be added
-                        console.log("user does not have the role");
+                    if (!adduser.roles.has(addrole.id)) { //The user does not have the role to be given
+                        if(!adduser.hasPermission("ADMINISTRATOR")){ //The user is not an admin: the role can be added
                         adduser.addRole(addrole.id);
-                        console.log("Added the role");
                         return message.channel.send(`Congratulations ${adduser}! You have just received the role ${addrole}`)
-                        .catch((err) =>{
-                            console.error(err);
-                        })
+                        }
+                        else{ //We are trying to give a role to another administrator
+                            return message.channel.send(` ${sender} Don't try to mess up with him`);
+                        }
                     }
                     else {
-                        console.log("User already had the role");
                         return message.channel.send(`${adduser} already has ${addrole}`);
                     }
                 }
