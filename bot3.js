@@ -1,4 +1,4 @@
-console.log("I am being hosted");
+console.log("Online KITA");
 
 const Discord = require("discord.js");
 const client = new Discord.Client();
@@ -248,16 +248,16 @@ client.on("message", (message) => { //When there is a message in the server, get
                 addrole = message.mentions.roles.first(); //Gets the role that is going to be added
 
                 if (!adduser || !addrole) { //There was a error
-                    return message.channel.send("An error occurred: Check your mentions");
+                    return message.channel.send(`${sender} Nii-Chan! You did something wrong! Baka! Q-Q`);
                 }
                 else { //No error in the mentions
                     if (!adduser.roles.has(addrole.id)) { //The user does not have the role to be given
                         if(!adduser.hasPermission("ADMINISTRATOR")){ //The user is not an admin: the role can be added
                         adduser.addRole(addrole.id);
-                        return message.channel.send(`Congratulations ${adduser}! You have just received the role ${addrole}`)
+                        return message.channel.send(`OMEDETETO! ${adduser} You have just got this Role! ${addrole}`)
                         }
                         else{ //We are trying to give a role to another administrator
-                            return message.channel.send(` ${sender} Don't try to mess up with him`);
+                            return message.channel.send(` ${sender} BAKA! Don't deal with the KAMI!`);
                         }
                     }
                     else {
@@ -266,7 +266,7 @@ client.on("message", (message) => { //When there is a message in the server, get
                 }
             }
             else { //Sender does not have permission
-                return message.channel.send("You don't have such permissions"); //
+                return message.channel.send(`${sender} Oni-chan, you don't have permission to use this command, wari ;-;`); //
             }
             return message.channel.send(`${addrole}`);
         }
