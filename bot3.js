@@ -211,7 +211,7 @@ client.on("message", (message) => { //When there is a message in the server, get
         //No command
         else if(message.content === `${prefix}`) //The user has just put -chan
         {
-            return message.channel.send(`${sender} Don't know the commands Nii-Chan? Type **-chan Help** and it will tell you the common commands! Bakatshi o>o` )
+            return message.channel.send(`${sender} Don't know the commands Nii-Chan? Type **-chan Help** and it will tell you the common commands! Bakatshi o>o` );
         }
 
         //HELP
