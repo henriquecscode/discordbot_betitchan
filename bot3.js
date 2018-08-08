@@ -270,7 +270,38 @@ client.on("message", (message) => { //When there is a message in the server, get
             else { //Sender does not have permission
                 return message.channel.send(`${sender} Oni-chan, you don't have permission to use this command, wari ;-;`); //
             }
-            return message.channel.send(`${addrole}`);
+        }
+
+         //REMOVE ROLE
+         else if (message.content.startsWith(`${prefix} removerole`)) {
+
+            console.log("Remove role detected");
+
+            if (sender.hasPermission("ADMINISTRATOR")) { //Checks if the sender has the permission to removed a role
+                removeuser = message.mentions.members.first(); //Gets the user to which the role is going to be removed
+                removerole = message.mentions.roles.first(); //Gets the role that is going to be removed
+
+                if (!removeuser || !removerole) { //There was a error
+                    return message.channel.send(`${sender} Nii-Chan! You did something wrong! Baka! Q-Q`);
+                }
+                else { //No error in the mentions
+                    if (removeuser.roles.has(removerole.id)) { //The user has the role to be removen
+                        if(!removeuser.hasPermission("ADMINISTRATOR")){ //The user is not an admin: the role can be removed
+                        removeuser.removeRole(removerole.id);
+                        return message.channel.send(`OMEDETETO! ${removeuser}has got ${removerole} removen`)
+                        }
+                        else{ //We are trying to remove a role from an administrator
+                            return message.channel.send(` ${sender} BAKA! Don't deal with the KAMI!`);
+                        }
+                    }
+                    else {
+                        return message.channel.send(`${removeuser} does not have ${removerole}`);
+                    }
+                }
+            }
+            else { //Sender does not have permission
+                return message.channel.send(`${sender} Oni-chan, you don't have permission to use this command, wari ;-;`); //
+            }
         }
 
         //No command
