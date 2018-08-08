@@ -2,6 +2,8 @@ require('dotenv').load();
 const Discord = require("discord.js");
 const client = new Discord.Client();
 
+require('http').createServer().listen(3000)//So the bot doesn't shut off after some time of innactivity: Used for hosting
+
 var prefix = "-chan" //The prefix that must be inplace before every message. Change here if tired of previous one
 var prefixlenght = prefix.length
 
@@ -79,25 +81,6 @@ function Chansmessages(usermessage)
      //Last case scenario where the string put after the prefix is not recognized
     return "Oni-Chan my Sensei didn't add this command!";
     
-/*
-    switch(usermessage){
-        case "ping": //Just a test command for now
-            return "pong!";
-        case "Stromi":
-            return "2Bee is cool!";
-        case "Help":
-            return "Will get added soon";
-        case "devaster":
-            index = Math.floor(Math.random() * adevaster.length);
-            return adevaster[index];
-        case "neko":
-            index = Math.floor(Math.random() * aneko.length); //Randomizes a number bettwen 0 and the size of the aneko - 1
-            return aneko[index];
-        case "":
-            return "Oni-Chan please put your command!";
-        default:
-            return "Oni-Chan my Sensei didn't add this command!";
-    }*/
 }
 //Controls the bot's answers
 
@@ -243,11 +226,4 @@ client.on("message", (message) => { //When there is a message in the server, get
 
 });
 
-client.login(process.env.TOKEN);
-
-/*client.on("message", (message) => { //When there is a message in the server, gets an event and stores the message
-    if (message.content.startsWith(prefix +  " ping")) {
-      message.channel.send("pong!");
-    }
-  });*/
-  //Saving the code
+client.login(process.env.TOKEN);//Gets the token from the .env file
