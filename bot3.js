@@ -3,7 +3,6 @@ require('dotenv').load(); //DONT PASS THIS LINE INTO GLITCH.COM SINCE IT ALREADY
 console.log("Online KITA");
 const Discord = require("discord.js");
 const client = new Discord.Client();
-//require('http').createServer().listen(3000)//So the bot doesn't shut off after some time of innactivity: Used for hosting
 
 var prefix = "-chan" //The prefix that must be inplace before every message. Change here if tired of previous one
 var prefixlenght = prefix.length
@@ -98,9 +97,8 @@ function Chansmessages(usermessage) {
 //Controls the bot's answers
 
 client.on("ready", () => {
-    console.log("Watashiwa KITA!");
-
-    logchannel = client.channels.find('name', 'betit_log'); //Gets the log channel
+    logchannel = client.channels.find('name', 'betit_log'); //Gets the log channel in the current server
+    logchannel.send(`Connected to server`); //Log in logchannel of the server
 
 });
 //Outputs "Watashiwa KITA!" in the console when running the code
