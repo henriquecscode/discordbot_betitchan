@@ -8,6 +8,8 @@ const client = new Discord.Client();
 var prefix = "-chan" //The prefix that must be inplace before every message. Change here if tired of previous one
 var prefixlenght = prefix.length
 
+var logchannel; //Where we output the logs so they can be checked instead of going to glitch.com
+
 var commands = [
     [
         "Devast",
@@ -97,6 +99,9 @@ function Chansmessages(usermessage) {
 
 client.on("ready", () => {
     console.log("Watashiwa KITA!");
+
+    logchannel = client.channels.find('name', 'betit_log'); //Gets the log channel
+
 });
 //Outputs "Watashiwa KITA!" in the console when running the code
 
@@ -112,13 +117,15 @@ client.on("message", (message) => { //When there is a message in the server, get
 
         //KICK
         if (message.content.startsWith(`${prefix} kick`)) {
-            console.log("Kicking detected");
 
             if (sender.hasPermission("KICK_MEMBERS")) {
                 let kuser = message.mentions.members.first();
                 if (!kuser) return message.channel.send(`${sender} Dare?`);
                 if (!kuser.hasPermission("KICK_MEMBERS")) {
-                    kuser.kick();
+
+                    kuser.kick(); //Kick action
+                    console.log("Kicking detected"); //Log in glitch.com
+                    logchannel.send(`${kuser} was kicked by ${sender}`); //Log in logchannel
                     return message.channel.send(`${kuser} 's Mou Shindeiru!`);
                 }
 
@@ -135,13 +142,15 @@ client.on("message", (message) => { //When there is a message in the server, get
 
         //BAN
         else if (message.content.startsWith(`${prefix} ban`)) {
-            console.log("Ban detected");
 
             if (sender.hasPermission("BAN_MEMBERS")) {
                 let buser = message.mentions.members.first();
                 if (!buser) return message.channel.send(`${sender} Dare?`);
                 if (!buser.hasPermission("BAN_MEMBERS")) {
-                    message.guild.member(buser).ban();
+
+                    message.guild.member(buser).ban(); //Ban action
+                    console.log("Ban detected"); //Log in glitch.com 
+                    logchannel.send(`${bsuer} was banned by ${sender}`); //Log in logchannel
                     return message.channel.send(`${buser} 's Mou Shindeiru!`);
                 }
 
@@ -157,7 +166,7 @@ client.on("message", (message) => { //When there is a message in the server, get
 
         //MUTE
         else if (message.content.startsWith(`${prefix} mute`)) {
-            console.log("Mute detected");
+
             if (sender.hasPermission("MANAGE_MESSAGES")) {
                 let muser = message.mentions.members.first();
                 if (!muser) return message.channel.send(`${sender} Dare?`);
@@ -165,7 +174,10 @@ client.on("message", (message) => { //When there is a message in the server, get
                     let muterole = message.guild.roles.find('name', "Muted");
 
                     if (!muser.roles.has(muterole.id)) {
-                        muser.addRole(muterole.id);
+
+                        muser.addRole(muterole.id); //Mute action
+                        console.log("Mute detected"); //Log in glitch.com
+                        logchannel.send(`${muser} was muted by ${sender}`); //Log in logchannel
                         return message.channel.send(`${muser} You can't Shaberu for now! :3`);
                     }
                     else {
@@ -186,7 +198,7 @@ client.on("message", (message) => { //When there is a message in the server, get
 
         //UNMUTE
         else if (message.content.startsWith(`${prefix} unmute`)) {
-            console.log("Unmute detected");
+
             if (sender.hasPermission("MANAGE_MESSAGES")) {
                 let umuser = message.mentions.members.first();
                 if (!umuser) return message.channel.send(`${sender} Dare?`);
@@ -194,7 +206,10 @@ client.on("message", (message) => { //When there is a message in the server, get
                     let muterole = message.guild.roles.find('name', "Muted");
 
                     if (umuser.roles.has(muterole.id)) {
-                        umuser.removeRole(muterole.id);
+
+                        umuser.removeRole(muterole.id); //Unmute action
+                        console.log("Unmute detected"); //Log in glitch.com
+                        logchannel.send(`${umuser} was umuted by ${sender}`); //Log in logchannel
                         return message.channel.send(`${umuser} you can Shaberu now! :3`);
                     }
                     else {
@@ -213,7 +228,6 @@ client.on("message", (message) => { //When there is a message in the server, get
 
         //DELETE
         else if (message.content.startsWith(`${prefix} delete`)) {
-            console.log("Delete detected");
 
             async function deletemessages() { //Creates an async function so we can use the await command
 
@@ -224,12 +238,14 @@ client.on("message", (message) => { //When there is a message in the server, get
                         return message.channel.send(`${sender} Oni-Chan, please tell me how many messages should I delete 8.8!`);
                     }
                     else {
+
                         message.delete(); //Deletes the command message
                         let todelete = await message.channel.fetchMessages({ limit: numbertodelete }); //Grabs the last "numbertodelete" messages in the channel
-                        message.channel.send(`**Nii-Chan I've deleted ${todelete.size} baka messages for you!**`); // Lets post into console how many messages we are deleting)
-                        message.channel.bulkDelete(todelete) //Delete the messages
+                        message.channel.bulkDelete(todelete) //Delete action
                         .catch(error => console.error(err)); //Catches any errors
-
+                        console.log("Delete detected"); //Log in glitch.com
+                        logchannel.send(`${todelete.size} messages deleted by ${sender}`); //Log in logchannel
+                        return message.channel.send(`**Nii-Chan I've deleted ${todelete.size} baka messages for you!**`); // Lets post into console how many messages we are deleting)
                     }
                 }
 
@@ -243,8 +259,6 @@ client.on("message", (message) => { //When there is a message in the server, get
         //ADD ROLE
         else if (message.content.startsWith(`${prefix} addrole`)) {
 
-            console.log("Add role detected");
-
             if (sender.hasPermission("ADMINISTRATOR")) { //Checks if the sender has the permission to add a role
                 let adduser = message.mentions.members.first(); //Gets the user to which the role is going to be added
                 let addrole = message.mentions.roles.first(); //Gets the role that is going to be added
@@ -255,7 +269,10 @@ client.on("message", (message) => { //When there is a message in the server, get
                 else { //No error in the mentions
                     if (!adduser.roles.has(addrole.id)) { //The user does not have the role to be given
                         if(!adduser.hasPermission("ADMINISTRATOR")){ //The user is not an admin: the role can be added
-                        adduser.addRole(addrole.id);
+
+                        adduser.addRole(addrole.id); //Add role action
+                        console.log("Add role detected"); //Log in glitch.com
+                        logchannel.send(`${sender} has added the role ${addrole} to ${adduser}`);
                         return message.channel.send(`OMEDETETO! ${adduser} You have just got this Role! ${addrole}`)
                         }
                         else{ //We are trying to give a role to another administrator
@@ -275,8 +292,6 @@ client.on("message", (message) => { //When there is a message in the server, get
          //REMOVE ROLE
          else if (message.content.startsWith(`${prefix} removerole`)) {
 
-            console.log("Remove role detected");
-
             if (sender.hasPermission("ADMINISTRATOR")) { //Checks if the sender has the permission to removed a role
                 let removeuser = message.mentions.members.first(); //Gets the user to which the role is going to be removed
                 let removerole = message.mentions.roles.first(); //Gets the role that is going to be removed
@@ -287,7 +302,9 @@ client.on("message", (message) => { //When there is a message in the server, get
                 else { //No error in the mentions
                     if (removeuser.roles.has(removerole.id)) { //The user has the role to be removen
                         if(!removeuser.hasPermission("ADMINISTRATOR")){ //The user is not an admin: the role can be removed
-                        removeuser.removeRole(removerole.id);
+                        removeuser.removeRole(removerole.id); //Remove role action
+                        console.log("Remove role detected"); //Log in glitch.com
+                        logchannel.send(`${sender} has removed the role ${removerole} from ${removeuser}`); //Log in logchannel
                         return message.channel.send(`OMEDETETO! ${removeuser}has got ${removerole} removen`)
                         }
                         else{ //We are trying to remove a role from an administrator
