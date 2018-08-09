@@ -21,8 +21,8 @@ var Axp //xp of everyone
 var Alvl //lvl of everyone
 var Aid // id of everyone
 var xplvlup //xp needed to lvl up
-var separator = "f47h$$"//the separator separate info (lvl, xp and user id) in the MemberInfo
-var separator2 = "g26t��"//the separator2 separate members in the txt file
+var separator = ","//the separator separate info (lvl, xp and user id) in the MemberInfo
+var separator2 = ";"//the separator2 separate members in the txt file
 //End of variables for the exp
 
 var commands = [
@@ -106,30 +106,31 @@ client.on('ready', function () { //Loads the info from the data file - Asyln
 client.on("message", (message) => { //When there is a message in the server, gets an event and stores the message
 
     message.content = message.content.toLowerCase();//Makes the message case insensitive
-    let sender = message.author; //The sender is the author of the message
+    let sender = message.member; //This sender is used for permissions and other commands - Returns a GuildMember
+    let expsender = message.author; //This sender is used for the exp commands - Returns a User
 
-    //Adds exp to the author of the message - Asyln
-    if (sender.bot == false) { //Id thww sender is not the bot
+    //Adds exp to the author of the message - Asyln - NOT WORKING
+    if (expsender.bot == false) { //Id of the sender sender is not the bot
         var bonus //bonus xp
-        lvl = parseInt(MemberInfoGet(sender.id, 1)) //we obtain we this function xp and lvl
-        xp = parseInt(MemberInfoGet(sender.id, 2)) //parseInt is necessary because MemberInfoGet(sender.id, 2) is a string not a number
+        lvl = parseInt(MemberInfoGet(expsender.id, 1)) //we obtain we this function xp and lvl
+        xp = parseInt(MemberInfoGet(expsender.id, 2)) //parseInt is necessary because MemberInfoGet(sender.id, 2) is a string not a number
         xplvlup = Math.pow(2 * lvl, 2) + 35 * lvl + 50 //the algorithm for the xp needed to lvl up, you are free to change it
         if (message.content.length <= 10) { bonus = 1 / 2 } //if some post shorts messages (like 10 or less characters) he will have 1/4 of the xp he should gain
         else if (message.content.length <= 20) { bonus = 1 } //same as before
         else if (message.content.length <= 40) { bonus = 1.1 } //same as before                 //You are free to change this
         else if (message.content.length <= 80) { bonus = 1.2 } //same as before
         else { bonus = 1.3 }//if someone post a message with more that 80 characters, he will have an xp boost of 1.3
-        console.log(bonus)
-        console.log(Math.ceil((Math.random() * 5 + lvl / 2) * bonus))
+        console.log(bonus);
+        console.log(Math.ceil((Math.random() * 5 + lvl / 2) * bonus));
         xp += Math.ceil((Math.random() * 5 + lvl / 2) * bonus) // xp gained algorithm, free to change this
         if (xp >= xplvlup) { // if you have enough xp to lvl up
             xp = xp - xplvlup // you lose the xp needed to level up
             lvl++ //you gain one level
-            MemberInfoSet(sender.id, 2, xp) //set the new xp into database
-            MemberInfoSet(sender.id, 1, lvl)//set the new lvl
+            MemberInfoSet(expsender.id, 2, xp) //set the new xp into database
+            MemberInfoSet(expsender.id, 1, lvl)//set the new lvl
             message.channel.send("GG! " + sender + " is now level " + lvl + "!") //message when lvl up change it please :D
         } else { //if you not lvl up
-            MemberInfoSet(sender.id, 2, xp) //you just set the xp
+            MemberInfoSet(expsender.id, 2, xp); //you just set the xp
         }
     }
 
@@ -537,6 +538,10 @@ client.on("message", (message) => { //When there is a message in the server, get
 
 client.login(process.env.TOKEN); //Logs in using the token
 
+client.on("guildMemberAdd", (member) => { //IF someone join the server
+    MemberInfo.push(member.user.id + separator + "1" + separator + "0") // we add his information to the database with a base lvl of 1 and xp of 0
+  });
+
 //Controls the bot's answers to simple commands
 function chansmessages(usermessage) {
 
@@ -589,9 +594,8 @@ function union(Uarray, Usymbols) { // Uarray for the array we want to unify into
     var CompressedArray = Uarray[0];
     for (var i = 1; i < Uarray.length; i++) {
         CompressedArray += Usymbols + Uarray[i];
-
-        return CompressedArray // we send back the information
     }
+        return CompressedArray // we send back the information
 }
   //End of level system functions
 
