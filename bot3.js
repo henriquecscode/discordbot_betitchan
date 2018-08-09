@@ -106,7 +106,7 @@ client.on('ready', function () { //Loads the info from the data file - Asyln
 client.on("message", (message) => { //When there is a message in the server, gets an event and stores the message
 
     message.content = message.content.toLowerCase();//Makes the message case insensitive
-    let sender = sender; //The sender is the author of the message
+    let sender = message.author; //The sender is the author of the message
 
     //Adds exp to the author of the message - Asyln
     if (sender.bot == false) { //Id thww sender is not the bot
