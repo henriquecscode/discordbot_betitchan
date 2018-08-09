@@ -1,6 +1,6 @@
 require('dotenv').load(); //DONT PASS THIS LINE INTO GLITCH.COM SINCE IT ALREADY GETS THE .ENV FILE
 
-console.log("Online KITA");
+console.log("Running"); //First thing that outputs in the console
 const Discord = require("discord.js");
 const client = new Discord.Client();
 
@@ -97,17 +97,16 @@ function Chansmessages(usermessage) {
 //Controls the bot's answers
 
 client.on("ready", () => {
-    logchannel = client.channels.find('name', 'betit_log'); //Gets the log channel in the current server
-    logchannel.send(`Connected to server`); //Log in logchannel of the server
-
+    console.log("Ready");
 });
-//Outputs "Watashiwa KITA!" in the console when running the code
+//Outputs "Ready" in the console when running the code
 
 client.on("message", (message) => { //When there is a message in the server, gets an event and stores the message
 
     message.content = message.content.toLowerCase();//Makes the message case insensitive
-
     if (message.content.startsWith(`${prefix}`)) { //Only executes if it is a message to the bot
+
+        logchannel = message.guild.channels.find('name', 'betit_log'); //Gets the logchannel of the current server so it can output the log messages
 
         let sender = message.member; //The sender is who sent the message
         let cont = message.content.slice(prefix.length).split(" "); // This variable slices off the prefix, then puts the rest in an array based off the spaces
@@ -179,7 +178,7 @@ client.on("message", (message) => { //When there is a message in the server, get
                         return message.channel.send(`${muser} You can't Shaberu for now! :3`);
                     }
                     else {
-                        return message.channel.send(`${sender.muser} This Stromer can't Shaberu! You said that! .-.`);
+                        return message.channel.send(`${sender} This Stromer can't Shaberu! You said that! .-.`);
                     }
 
                 }
@@ -237,10 +236,10 @@ client.on("message", (message) => { //When there is a message in the server, get
                     }
                     else {
 
-                        message.delete(); //Deletes the command message
+                        message.delete(); //Deletes the command message and catches the error if there was any
                         let todelete = await message.channel.fetchMessages({ limit: numbertodelete }); //Grabs the last "numbertodelete" messages in the channel
                         message.channel.bulkDelete(todelete) //Delete action
-                        .catch(error => console.error(err)); //Catches any errors
+                        .catch(error => console.error(error)); //Catches any errors
                         console.log("Delete detected"); //Log in glitch.com
                         logchannel.send(`${todelete.size} messages deleted by ${sender}`); //Log in logchannel
                         return message.channel.send(`**Nii-Chan I've deleted ${todelete.size} baka messages for you!**`); // Lets post into console how many messages we are deleting)
@@ -346,4 +345,5 @@ client.on("message", (message) => { //When there is a message in the server, get
 
 });
 
-client.login(process.env.TOKEN);//Logs in using the token
+client.login(process.env.TOKEN); //Logs in using the token
+
