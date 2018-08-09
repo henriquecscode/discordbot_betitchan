@@ -148,7 +148,7 @@ client.on("message", (message) => { //When there is a message in the server, get
 
                     message.guild.member(buser).ban(); //Ban action
                     console.log("Ban detected"); //Log in glitch.com 
-                    logchannel.send(`${bsuer} was banned by ${sender}`); //Log in logchannel
+                    logchannel.send(`${buser} was banned by ${sender}`); //Log in logchannel
                     return message.channel.send(`${buser} 's Mou Shindeiru!`);
                 }
 
