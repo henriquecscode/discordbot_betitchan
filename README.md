@@ -6,8 +6,25 @@ https://glitch.com/~betit-chan
 account: stromi's account through git hub
 Token used: Henry's
 
-//bot3.js
+//exp.js - Asyln
+Exp functions
+Load
+Save
+Create
+Addexp
+Getrank
+Getleaderboard
 
-Exp system - Asyln
-Commands - Henry
+//mod.js - Henry
+Mute
+Unmute
+Kick
+Ban
+Addrole
+Removerole
+Delete
+
+//entertainers.js - Henry / Omar
+Getcommands
+Othermessages
 
