@@ -5,7 +5,7 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 const fs = require('fs');//EXP - thing needed to store data in a txt file if the bot goes off 
 
-var prefix = "-chan" //The prefix that must be inplace before every message. Change here if tired of previous one
+var prefix = "test" //The prefix that must be inplace before every message. Change here if tired of previous one
 var prefixlenght = prefix.length
 
 //Variables for the exp
@@ -134,413 +134,396 @@ client.on("message", (message) => { //When there is a message in the server, get
         }
     }
 
-    //Main commands -Henry
-    if (message.content.startsWith(`${prefix}`)) { //Only executes if it is a message to the chan bot
+    //Commands
+    if (message.content.startsWith(`${prefix}`)) { //Only executes if it is a message to the exp bot
 
         let logchannel = message.guild.channels.find('id', '477146921618767893'); //Gets the logchannel of the current server by ID so it can output the log messages
 
-        let cont = message.content.slice(prefix.length).split(" "); // This variable slices off the prefix, then puts the rest in an array based off the spaces
-        let args = cont.slice(1); // This slices off the command in cont, only leaving the arguments.
-
-        //KICK
-        if (message.content.startsWith(`${prefix} kick`)) {
-
-            if (sender.hasPermission("KICK_MEMBERS")) {
-                let kuser = message.mentions.members.first();
-                if (!kuser) return message.channel.send(`${sender} Dare?`);
-                if (!kuser.hasPermission("KICK_MEMBERS")) {
-
-                    kuser.kick(); //Kick action
-                    console.log("Kicking detected"); //Log in glitch.com
-                    logchannel.send(`${kuser} was kicked by ${sender}`); //Log in logchannel
-                    return message.channel.send(`${kuser} 's Mou Shindeiru!`);
-                }
-
-                else {
-                    return message.channel.send(`${sender} Oi, trying to kick my Sensei? o.o`);
-                }
-
-            }
-
-            else {
-                return message.channel.send(`${sender} Oni-chan, you don't have permission to use this command, wari ;-;`);
-            }
-        }
-
-        //BAN
-        else if (message.content.startsWith(`${prefix} ban`)) {
-
-            if (sender.hasPermission("BAN_MEMBERS")) {
-                let buser = message.mentions.members.first();
-                if (!buser) return message.channel.send(`${sender} Dare?`);
-                if (!buser.hasPermission("BAN_MEMBERS")) {
-
-                    message.guild.member(buser).ban(); //Ban action
-                    console.log("Ban detected"); //Log in glitch.com 
-                    logchannel.send(`${buser} was banned by ${sender}`); //Log in logchannel
-                    return message.channel.send(`${buser} 's Mou Shindeiru!`);
-                }
-
-                else {
-                    return message.channel.send(`${sender} Oi, trying to ban my Sensei? o.o`);
-                }
-            }
-
-            else {
-                return message.channel.send(`${sender} Oni-chan, you don't have permission to use this command, wari ;-;`);
-            }
-        }
-
-        //MUTE
-        else if (message.content.startsWith(`${prefix} mute`)) {
-
-            if (sender.hasPermission("MANAGE_MESSAGES")) {
-                let muser = message.mentions.members.first();
-                if (!muser) return message.channel.send(`${sender} Dare?`);
-                if (!muser.hasPermission("MANAGE_MESSAGES")) {
-                    let muterole = message.guild.roles.find('name', "Muted");
-
-                    if (!muser.roles.has(muterole.id)) {
-
-                        muser.addRole(muterole.id); //Mute action
-                        console.log("Mute detected"); //Log in glitch.com
-                        logchannel.send(`${muser} was muted by ${sender}`); //Log in logchannel
-                        return message.channel.send(`${muser} You can't Shaberu for now! :3`);
-                    }
-                    else {
-                        return message.channel.send(`${sender} This Stromer can't Shaberu! You said that! .-.`);
-                    }
-
-                }
-                else {
-                    return message.channel.send(`${sender} Trying to mute someone who's stronger that you? >>>///<<<`);
-                }
-
-            }
-
-            else {
-                return message.channel.send(`${sender} Oni-chan, you don't have permission to use this command, wari ;-;`);
-            }
-        }
-
-        //UNMUTE
-        else if (message.content.startsWith(`${prefix} unmute`)) {
-
-            if (sender.hasPermission("MANAGE_MESSAGES")) {
-                let umuser = message.mentions.members.first();
-                if (!umuser) return message.channel.send(`${sender} Dare?`);
-                if (!umuser.hasPermission("MANAGE_CHANNELS")) {
-                    let muterole = message.guild.roles.find('name', "Muted");
-
-                    if (umuser.roles.has(muterole.id)) {
-
-                        umuser.removeRole(muterole.id); //Unmute action
-                        console.log("Unmute detected"); //Log in glitch.com
-                        logchannel.send(`${umuser} was umuted by ${sender}`); //Log in logchannel
-                        return message.channel.send(`${umuser} you can Shaberu now! :3`);
-                    }
-                    else {
-                        return message.channel.send(`${sender.umuser} This Stromer can Shaberu! You said that! .-.`);
-                    }
-                }
-                else {
-                    return message.channel.send(`${sender} Trying to unmute someone who's stronger that you? How cute :>`);
-                }
-            }
-
-            else {
-                return message.channel.send(`${sender} Oni-chan, you don't have permission to use this command, wari ;-;`);
-            }
-        }
-
-        //DELETE
-        else if (message.content.startsWith(`${prefix} delete`)) {
-
-            async function deletemessages() { //Creates an async function so we can use the await command
-
-                if (sender.hasPermission("MANAGE_MESSAGES")) { //The sender can indeed delete messages
-                    let numbertodelete = message.content.slice(prefixlenght + 8); //8 is the size of the " delete "
-
-                    if (message.content === `${prefix} delete` || isNaN(numbertodelete)) { //The user didn't specify a valid number or just posted "-chan delete"
-                        return message.channel.send(`${sender} Oni-Chan, please tell me how many messages should I delete 8.8!`);
-                    }
-                    else {
-
-                        message.delete(); //Deletes the command message and catches the error if there was any
-                        let todelete = await message.channel.fetchMessages({ limit: numbertodelete }); //Grabs the last "numbertodelete" messages in the channel
-                        message.channel.bulkDelete(todelete) //Delete action
-                            .catch(error => console.error(error)); //Catches any errors
-                        console.log("Delete detected"); //Log in glitch.com
-                        logchannel.send(`${todelete.size} messages deleted by ${sender}`); //Log in logchannel
-                        return message.channel.send(`**Nii-Chan I've deleted ${todelete.size} baka messages for you!**`); // Lets post into console how many messages we are deleting)
-                    }
-                }
-
-                else { //The sender does not have the permissions
-                    return message.channel.send(`${sender} Oni-chan, you don't have permission to use this command, wari ;-;`);
-                }
-            }
-            deletemessages(); //Runs the function we have just defined
-        }
-
-        //ADD ROLE
-        else if (message.content.startsWith(`${prefix} addrole`)) {
-
-            if (sender.hasPermission("ADMINISTRATOR")) { //Checks if the sender has the permission to add a role
-                let adduser = message.mentions.members.first(); //Gets the user to which the role is going to be added
-                let addrole = message.mentions.roles.first(); //Gets the role that is going to be added
-
-                if (!adduser || !addrole) { //There was a error
-                    return message.channel.send(`${sender} Nii-Chan! You did something wrong! Baka! Q-Q`);
-                }
-                else { //No error in the mentions
-                    if (!adduser.roles.has(addrole.id)) { //The user does not have the role to be given
-                        if (!adduser.hasPermission("ADMINISTRATOR")) { //The user is not an admin: the role can be added
-
-                            adduser.addRole(addrole.id); //Add role action
-                            console.log("Add role detected"); //Log in glitch.com
-                            logchannel.send(`${sender} has added the role ${addrole} to ${adduser}`);
-                            return message.channel.send(`OMEDETETO! ${adduser} You have just got this Role! ${addrole}`)
-                        }
-                        else { //We are trying to give a role to another administrator
-                            return message.channel.send(` ${sender} BAKA! Don't deal with the KAMI!`);
-                        }
-                    }
-                    else {
-                        return message.channel.send(`${adduser} already has ${addrole}`);
-                    }
-                }
-            }
-            else { //Sender does not have permission
-                return message.channel.send(`${sender} Oni-chan, you don't have permission to use this command, wari ;-;`); //
-            }
-        }
-
-        //REMOVE ROLE
-        else if (message.content.startsWith(`${prefix} removerole`)) {
-
-            if (sender.hasPermission("ADMINISTRATOR")) { //Checks if the sender has the permission to removed a role
-                let removeuser = message.mentions.members.first(); //Gets the user to which the role is going to be removed
-                let removerole = message.mentions.roles.first(); //Gets the role that is going to be removed
-
-                if (!removeuser || !removerole) { //There was a error
-                    return message.channel.send(`${sender} Nii-Chan! You did something wrong! Baka! Q-Q`);
-                }
-                else { //No error in the mentions
-                    if (removeuser.roles.has(removerole.id)) { //The user has the role to be removen
-                        if (!removeuser.hasPermission("ADMINISTRATOR")) { //The user is not an admin: the role can be removed
-                            removeuser.removeRole(removerole.id); //Remove role action
-                            console.log("Remove role detected"); //Log in glitch.com
-                            logchannel.send(`${sender} has removed the role ${removerole} from ${removeuser}`); //Log in logchannel
-                            return message.channel.send(`OMEDETETO! ${removeuser}has got ${removerole} removen`)
-                        }
-                        else { //We are trying to remove a role from an administrator
-                            return message.channel.send(` ${sender} BAKA! Don't deal with the KAMI!`);
-                        }
-                    }
-                    else {
-                        return message.channel.send(`${removeuser} does not have ${removerole}`);
-                    }
-                }
-            }
-            else { //Sender does not have permission
-                return message.channel.send(`${sender} Oni-chan, you don't have permission to use this command, wari ;-;`); //
-            }
-        }
+        let Smessage = message.content.trim().split(/ +/g); // This variable creates an array (Smessage) - trim() ensures there are no spaces before and after the text and spil(/ +/g) makes so the elements of the array are the words separated by one or more spaces
+        let args = Smessage.slice(1); // This slices off the prefix in Smessage, only leaving the command and the arguments.
+        /*
+        Smessaage[0] is prefix
+        Smessage[1] is the command
+        args[0] is the command
+        */
 
         //No command
-        else if (message.content === `${prefix}`) //The user has just put -chan
+        if (Smessage.length == 1) //The user has just put the prefix
         {
             return message.channel.send(`${sender} Don't know the commands Nii-Chan? Type **-chan Help** and it will tell you the common commands! Bakatshi o>o`);
         }
-
-        //HELP
-        else if (message.content.startsWith(`${prefix} help`)) {
-
-            var allcommandsstring = "";
-            message.channel.send(`${sender} Here is a list of what you can do`);
-            for (var i = 0; i < commands.length; i++) {
-                allcommandsstring += "**" + commands[i][0] + "**" + " ~" + commands[i][1] + "~" + '\n'; //Makes so each new command is in bold, followed by its description and is succeeded by a new line
-            }
-            allcommandsstring += "Oni-Chan, these are all the bots the you can use Imada :3";
-            message.channel.send(allcommandsstring);
-            //Outputs the multiple commands: the first element of each row of the commands 2d array
-        }
-
         else {
-            return message.channel.send(chansmessages(message.content));
-        }
+            switch (Smessage[1]) {
 
+                //Exp commands - asyln
+                case "rank": //if the command rank is used
+                    var rank = 1 //your rank in the server is set to one
+                    var MentionedUser //the user you mentionned in the message
+                    var Title //the title of the embed
+                    var thumbnail //the pfp
+                    Alvl = [] //Everyone's lvl in an array
+                    Axp = []//Everyone's xp in an array
+
+                    if (message.mentions.users.firstKey() !== undefined) { //if someone is mentionned
+                        MentionedUser = message.mentions.users.firstKey() //then we take his id
+                        Title = "Stats of " + message.mentions.users.first().username //we set the title with his username
+                        thumbnail = message.mentions.users.first().avatarURL //and his avatarURL
+                    }
+
+                    else { //if not
+                        MentionedUser = message.author.id //we take the id of the author of the comment
+                        Title = "Your stats :"
+                        thumbnail = message.author.avatarURL //and his avatarURL
+                    }
+
+                    lvl = parseInt(MemberInfoGet(MentionedUser, 1)) //We obtain the xp and lvl of the MentionedUser or the author if none
+                    xp = parseInt(MemberInfoGet(MentionedUser, 2))
+
+                    for (var i = 0; i < MemberInfo.length; i++) { //for everyuser
+                        UniqueMemberInfo = MemberInfo[i].split(separator) //we take their information
+                        Alvl.push(UniqueMemberInfo[1]) //and we only take their xp and lvl
+                        Axp.push(UniqueMemberInfo[2])
+                    }
+                    for (var i = 0; i < Alvl.length; i++) {//now we calcualte the rank of the user, if someone have higher lvl or same lvl or same lvl but higher xp, your gain one rank
+                        if (lvl < Alvl[i]) { rank++ }
+                        else if (lvl == Alvl[i]) {
+                            if (xp < Axp[i]) { rank++ }
+                        }
+                    }
+                    xplvlup = Math.pow(2 * lvl, 2) + 35 * lvl + 50 //we caculate the xp needed to lvl up
+                    var embed = new Discord.RichEmbed(); //a new embed
+                    embed.addField(Title, //the title of the embed
+                        "lvl : " + lvl + "\n" + //your lvl
+                        "xp : " + xp + "\n" +//your xp
+                        "xp needed to lvl up : " + (xplvlup - xp) + "\n" + //the xp you have still to gain before lvl up
+                        "rank in this server : " + rank + "/" + MemberInfo.length //and your rank
+                    )
+                    embed.setThumbnail(thumbnail) //the pfp
+                    embed.setColor(0x35A7BF)  //the color of the embed
+                    message.channel.send("", embed) //then we send it
+                    break;
+
+                //ok leaderboard is a lot tricky so yeah it's will be a bit hard to explain
+                case "leaderboard":
+                    var leaderboarduser = ["your mom ", "your mom ", "your mom ", "your mom ", "your mom ", "your mom ", "your mom ", "your mom ", "your mom ", "your mom "] //This are the base value for the leaderboard if there is less than 10 members
+                    var leaderboardlvl = ["is gay ", "is gay ", "is gay ", "is gay ", "is gay ", "is gay ", "is gay ", "is gay ", "is gay ", "is gay "]
+                    var leaderboardxp = ["omegalul", "omegalul", "omegalul", "omegalul", "omegalul", "omegalul", "omegalul", "omegalul", "omegalul", "omegalul"]
+                    var bestone = 0 //ok this value is the best user in the array. If the best user is in MemberInfo, then it's will be 4, well, than exactly that but you will understand later
+                    Alvl = [] //Everyone's lvl
+                    Axp = []//Everyone's xp
+                    Aid = []//Everyone's id
+                    for (var i = 0; i < MemberInfo.length; i++) { // that the same thing as rank
+                        UniqueMemberInfo = MemberInfo[i].split(separator)
+                        Aid.push(UniqueMemberInfo[0])
+                        Alvl.push(UniqueMemberInfo[1])
+                        Axp.push(UniqueMemberInfo[2])
+                    }
+                    for (var i = 0; i < 10; i++) {//10 for the 10 best users in the leaderboard.
+                        bestone = 0 //reseted
+
+                        for (var j = 0; j < Alvl.length; j++) {
+                            if (parseInt(Alvl[j]) < Alvl[bestone]) { } //If bestone has a better lvl than the current tested player , nothing to do
+                            else if (parseInt(Alvl[j]) == Alvl[bestone]) { //If bestone have the same lvl than the current tested player
+                                if (parseInt(Axp[j]) >= Axp[bestone]) { bestone = j }
+                            }// and if the current tested player have a better xp than bestone, he become bestone
+                            else { bestone = j }//and if the current tested player have a better lvl than bestone , he become the new bestone
+                        }
+
+                        if (Alvl.length !== 1) { //if there is still players to test, with your server it'll be always true
+                            console.log(Aid[bestone])
+                            leaderboarduser[i] = message.guild.members.get(Aid[bestone]).user.username //we get the username of the best player
+                            leaderboardlvl[i] = "lvl : " + Alvl[bestone] //we get the lvl of the player
+                            leaderboardxp[i] = "xp : " + Axp[bestone] // we get the xp of the player
+                            Aid.splice(bestone, 1) //and most important part we reomve from the list the best player so when we will find the second it will not be this best player again
+                            Alvl.splice(bestone, 1) //that why bestone will be the best player in MemberInfo the first time but the second the second time etc...
+                            Axp.splice(bestone, 1)
+                        }
+                        else { i = 10 } // if there is no longer players to test we stop here
+                    }
+                    var embed = new Discord.RichEmbed(); //a new embed
+                    embed.addField("Leaderboard", //title of the first column
+                        "1  : " + leaderboarduser[0] + "\n" + //fthe usernames
+                        "2  : " + leaderboarduser[1] + "\n" +
+                        "3  : " + leaderboarduser[2] + "\n" +
+                        "4  : " + leaderboarduser[3] + "\n" +
+                        "5  : " + leaderboarduser[4] + "\n" +
+                        "6  : " + leaderboarduser[5] + "\n" +
+                        "7  : " + leaderboarduser[6] + "\n" +
+                        "8  : " + leaderboarduser[7] + "\n" +
+                        "9  : " + leaderboarduser[8] + "\n" +
+                        "10 : " + leaderboarduser[9]
+                        , true)
+
+                    embed.addField("LVL",//title of the second column
+
+                        leaderboardlvl[0] + "\n" + //the lvls
+                        leaderboardlvl[1] + "\n" +
+                        leaderboardlvl[2] + "\n" +
+                        leaderboardlvl[3] + "\n" +
+                        leaderboardlvl[4] + "\n" +
+                        leaderboardlvl[5] + "\n" +
+                        leaderboardlvl[6] + "\n" +
+                        leaderboardlvl[7] + "\n" +
+                        leaderboardlvl[8] + "\n" +
+                        leaderboardlvl[9]
+                        , true)
+
+                    embed.addField("XP",//title of the thrid column
+                        leaderboardxp[0] + "\n" +//the xp
+                        leaderboardxp[1] + "\n" +
+                        leaderboardxp[2] + "\n" +
+                        leaderboardxp[3] + "\n" +
+                        leaderboardxp[4] + "\n" +
+                        leaderboardxp[5] + "\n" +
+                        leaderboardxp[6] + "\n" +
+                        leaderboardxp[7] + "\n" +
+                        leaderboardxp[8] + "\n" +
+                        leaderboardxp[9]
+                        , true)
+                    embed.setColor(0x35A7BF) //the color of the embed
+                    message.channel.send("", embed) //we send the embed
+                    break;
+
+                case "manualmemberaccountcreation": //You will need to do this command one time for adding every member to the database
+                    if (sender.hasPermission("ADMINISTRATOR")) { //Only admins have the permission
+                        var EveryUserId = message.guild.members.keyArray() //message.guild.members.keyArray() this will give all users id
+                        for (var i = 0; i < EveryUserId.length; i++) { //Create every account
+                            MemberInfo[i] = EveryUserId[i] + separator + "1" + separator + "0"
+                        }
+                        message.channel.send("members succesfully added to database!");
+                    }
+                    break;
+
+
+                case "save":
+                    if (sender.hasPermission("ADMINISTRATOR")) {
+                        var CompressedInfo = union(MemberInfo, separator2) //we take the MemberInfo array and transform it into a big string with members separated by separator2
+                        const fs = require('fs');
+                        fs.writeFile('savefile.txt', CompressedInfo, (err) => { //and then save it
+                            if (err) throw err;
+                            message.channel.send("Saved !")
+                        });
+                    }
+                    break;
+
+                //Main commands - Henry
+                case "kick":
+                    if (sender.hasPermission("KICK_MEMBERS")) {
+                        let kuser = message.mentions.members.first();
+                        if (!kuser) return message.channel.send(`${sender} Dare?`);
+                        if (!kuser.hasPermission("KICK_MEMBERS")) {
+
+                            kuser.kick(); //Kick action
+                            console.log("Kicking detected"); //Log in glitch.com
+                            logchannel.send(`${kuser} was kicked by ${sender}`); //Log in logchannel
+                            return message.channel.send(`${kuser} 's Mou Shindeiru!`);
+                        }
+
+                        else {
+                            return message.channel.send(`${sender} Oi, trying to kick my Sensei? o.o`);
+                        }
+
+                    }
+
+                    else {
+                        return message.channel.send(`${sender} Oni-chan, you don't have permission to use this command, wari ;-;`);
+                    }
+                    break;
+
+                case "ban":
+                    if (sender.hasPermission("BAN_MEMBERS")) {
+                        let buser = message.mentions.members.first();
+                        if (!buser) return message.channel.send(`${sender} Dare?`);
+                        if (!buser.hasPermission("BAN_MEMBERS")) {
+
+                            message.guild.member(buser).ban(); //Ban action
+                            console.log("Ban detected"); //Log in glitch.com 
+                            logchannel.send(`${buser} was banned by ${sender}`); //Log in logchannel
+                            return message.channel.send(`${buser} 's Mou Shindeiru!`);
+                        }
+
+                        else {
+                            return message.channel.send(`${sender} Oi, trying to ban my Sensei? o.o`);
+                        }
+                    }
+
+                    else {
+                        return message.channel.send(`${sender} Oni-chan, you don't have permission to use this command, wari ;-;`);
+                    }
+                    break;
+
+                case "mute":
+                    if (sender.hasPermission("MANAGE_MESSAGES")) {
+                        let muser = message.mentions.members.first();
+                        if (!muser) return message.channel.send(`${sender} Dare?`);
+                        if (!muser.hasPermission("MANAGE_MESSAGES")) {
+                            let muterole = message.guild.roles.find('name', "Muted");
+
+                            if (!muser.roles.has(muterole.id)) {
+
+                                muser.addRole(muterole.id); //Mute action
+                                console.log("Mute detected"); //Log in glitch.com
+                                logchannel.send(`${muser} was muted by ${sender}`); //Log in logchannel
+                                return message.channel.send(`${muser} You can't Shaberu for now! :3`);
+                            }
+                            else {
+                                return message.channel.send(`${sender} This Stromer can't Shaberu! You said that! .-.`);
+                            }
+
+                        }
+                        else {
+                            return message.channel.send(`${sender} Trying to mute someone who's stronger that you? >>>///<<<`);
+                        }
+
+                    }
+
+                    else {
+                        return message.channel.send(`${sender} Oni-chan, you don't have permission to use this command, wari ;-;`);
+                    }
+                    break;
+
+                case "unmute":
+                    if (sender.hasPermission("MANAGE_MESSAGES")) {
+                        let umuser = message.mentions.members.first();
+                        if (!umuser) return message.channel.send(`${sender} Dare?`);
+                        if (!umuser.hasPermission("MANAGE_CHANNELS")) {
+                            let muterole = message.guild.roles.find('name', "Muted");
+
+                            if (umuser.roles.has(muterole.id)) {
+
+                                umuser.removeRole(muterole.id); //Unmute action
+                                console.log("Unmute detected"); //Log in glitch.com
+                                logchannel.send(`${umuser} was umuted by ${sender}`); //Log in logchannel
+                                return message.channel.send(`${umuser} you can Shaberu now! :3`);
+                            }
+                            else {
+                                return message.channel.send(`${sender.umuser} This Stromer can Shaberu! You said that! .-.`);
+                            }
+                        }
+                        else {
+                            return message.channel.send(`${sender} Trying to unmute someone who's stronger that you? How cute :>`);
+                        }
+                    }
+
+                    else {
+                        return message.channel.send(`${sender} Oni-chan, you don't have permission to use this command, wari ;-;`);
+                    }
+                    break;
+
+                case "delete":
+                    async function deletemessages() { //Creates an async function so we can use the await command
+
+                        if (sender.hasPermission("MANAGE_MESSAGES")) { //The sender can indeed delete messages
+                            let numbertodelete = message.content.slice(prefixlenght + 8); //8 is the size of the " delete "
+
+                            if (message.content === `${prefix} delete` || isNaN(numbertodelete)) { //The user didn't specify a valid number or just posted "-chan delete"
+                                return message.channel.send(`${sender} Oni-Chan, please tell me how many messages should I delete 8.8!`);
+                            }
+                            else {
+
+                                message.delete(); //Deletes the command message and catches the error if there was any
+                                let todelete = await message.channel.fetchMessages({ limit: numbertodelete }); //Grabs the last "numbertodelete" messages in the channel
+                                message.channel.bulkDelete(todelete) //Delete action
+                                    .catch(error => console.error(error)); //Catches any errors
+                                console.log("Delete detected"); //Log in glitch.com
+                                logchannel.send(`${todelete.size} messages deleted by ${sender}`); //Log in logchannel
+                                return message.channel.send(`**Nii-Chan I've deleted ${todelete.size} baka messages for you!**`); // Lets post into console how many messages we are deleting)
+                            }
+                        }
+
+                        else { //The sender does not have the permissions
+                            return message.channel.send(`${sender} Oni-chan, you don't have permission to use this command, wari ;-;`);
+                        }
+                    }
+                    deletemessages(); //Runs the function we have just defined
+                    break;
+
+                case "addrole":
+                    if (sender.hasPermission("ADMINISTRATOR")) { //Checks if the sender has the permission to add a role
+                        let adduser = message.mentions.members.first(); //Gets the user to which the role is going to be added
+                        let addrole = message.mentions.roles.first(); //Gets the role that is going to be added
+
+                        if (!adduser || !addrole) { //There was a error
+                            return message.channel.send(`${sender} Nii-Chan! You did something wrong! Baka! Q-Q`);
+                        }
+                        else { //No error in the mentions
+                            if (!adduser.roles.has(addrole.id)) { //The user does not have the role to be given
+                                if (!adduser.hasPermission("ADMINISTRATOR")) { //The user is not an admin: the role can be added
+
+                                    adduser.addRole(addrole.id); //Add role action
+                                    console.log("Add role detected"); //Log in glitch.com
+                                    logchannel.send(`${sender} has added the role ${addrole} to ${adduser}`);
+                                    return message.channel.send(`OMEDETETO! ${adduser} You have just got this Role! ${addrole}`)
+                                }
+                                else { //We are trying to give a role to another administrator
+                                    return message.channel.send(` ${sender} BAKA! Don't deal with the KAMI!`);
+                                }
+                            }
+                            else {
+                                return message.channel.send(`${adduser} already has ${addrole}`);
+                            }
+                        }
+                    }
+                    else { //Sender does not have permission
+                        return message.channel.send(`${sender} Oni-chan, you don't have permission to use this command, wari ;-;`); //
+                    }
+                    break;
+
+                case "removerole":
+                    if (sender.hasPermission("ADMINISTRATOR")) { //Checks if the sender has the permission to removed a role
+                        let removeuser = message.mentions.members.first(); //Gets the user to which the role is going to be removed
+                        let removerole = message.mentions.roles.first(); //Gets the role that is going to be removed
+
+                        if (!removeuser || !removerole) { //There was a error
+                            return message.channel.send(`${sender} Nii-Chan! You did something wrong! Baka! Q-Q`);
+                        }
+                        else { //No error in the mentions
+                            if (removeuser.roles.has(removerole.id)) { //The user has the role to be removen
+                                if (!removeuser.hasPermission("ADMINISTRATOR")) { //The user is not an admin: the role can be removed
+                                    removeuser.removeRole(removerole.id); //Remove role action
+                                    console.log("Remove role detected"); //Log in glitch.com
+                                    logchannel.send(`${sender} has removed the role ${removerole} from ${removeuser}`); //Log in logchannel
+                                    return message.channel.send(`OMEDETETO! ${removeuser}has got ${removerole} removen`)
+                                }
+                                else { //We are trying to remove a role from an administrator
+                                    return message.channel.send(` ${sender} BAKA! Don't deal with the KAMI!`);
+                                }
+                            }
+                            else {
+                                return message.channel.send(`${removeuser} does not have ${removerole}`);
+                            }
+                        }
+                    }
+                    else { //Sender does not have permission
+                        return message.channel.send(`${sender} Oni-chan, you don't have permission to use this command, wari ;-;`); //
+                    }
+                    break;
+
+                case "help":
+                    var allcommandsstring = "";
+                    message.channel.send(`${sender} Here is a list of what you can do`);
+                    for (var i = 0; i < commands.length; i++) {
+                        allcommandsstring += "**" + commands[i][0] + "**" + " ~" + commands[i][1] + "~" + '\n'; //Makes so each new command is in bold, followed by its description and is succeeded by a new line
+                    }
+                    allcommandsstring += "Oni-Chan, these are all the bots the you can use Imada :3";
+                    return message.channel.send(allcommandsstring);
+                //Outputs the multiple commands: the first element of each row of the commands 2d array
+
+                default:
+
+                    return message.channel.send(chansmessages(message.content));
+                    break;
+            }
+
+        }
     }
-
-    //Exp commands - Asyln
-    else if (message.content.startsWith(`${expprefix}`)) { //Only executes if it is a message to the exp bot
-        Smessage = message.content.split(" ")
-        switch (Smessage[1]) {
-
-            case "rank": //if the command rank is used
-                var rank = 1 //your rank in the server is set to one
-                var MentionedUser //the user you mentionned in the message
-                var Title //the title of the embed
-                var thumbnail //the pfp
-                Alvl = [] //Everyone's lvl in an array
-                Axp = []//Everyone's xp in an array
-
-                if (message.mentions.users.firstKey() !== undefined) { //if someone is mentionned
-                    MentionedUser = message.mentions.users.firstKey() //then we take his id
-                    Title = "Stats of " + message.mentions.users.first().username //we set the title with his username
-                    thumbnail = message.mentions.users.first().avatarURL //and his avatarURL
-                }
-
-                else { //if not
-                    MentionedUser = message.author.id //we take the id of the author of the comment
-                    Title = "Your stats :"
-                    thumbnail = message.author.avatarURL //and his avatarURL
-                }
-
-                lvl = parseInt(MemberInfoGet(MentionedUser, 1)) //We obtain the xp and lvl of the MentionedUser or the author if none
-                xp = parseInt(MemberInfoGet(MentionedUser, 2))
-
-                for (var i = 0; i < MemberInfo.length; i++) { //for everyuser
-                    UniqueMemberInfo = MemberInfo[i].split(separator) //we take their information
-                    Alvl.push(UniqueMemberInfo[1]) //and we only take their xp and lvl
-                    Axp.push(UniqueMemberInfo[2])
-                }
-                for (var i = 0; i < Alvl.length; i++) {//now we calcualte the rank of the user, if someone have higher lvl or same lvl or same lvl but higher xp, your gain one rank
-                    if (lvl < Alvl[i]) { rank++ }
-                    else if (lvl == Alvl[i]) {
-                        if (xp < Axp[i]) { rank++ }
-                    }
-                }
-                xplvlup = Math.pow(2 * lvl, 2) + 35 * lvl + 50 //we caculate the xp needed to lvl up
-                var embed = new Discord.RichEmbed(); //a new embed
-                embed.addField(Title, //the title of the embed
-                    "lvl : " + lvl + "\n" + //your lvl
-                    "xp : " + xp + "\n" +//your xp
-                    "xp needed to lvl up : " + (xplvlup - xp) + "\n" + //the xp you have still to gain before lvl up
-                    "rank in this server : " + rank + "/" + MemberInfo.length //and your rank
-                )
-                embed.setThumbnail(thumbnail) //the pfp
-                embed.setColor(0x35A7BF)  //the color of the embed
-                message.channel.send("", embed) //then we send it
-                break;
-
-            //ok leaderboard is a lot tricky so yeah it's will be a bit hard to explain
-            case "leaderboard":
-                var leaderboarduser = ["your mom ", "your mom ", "your mom ", "your mom ", "your mom ", "your mom ", "your mom ", "your mom ", "your mom ", "your mom "] //This are the base value for the leaderboard if there is less than 10 members
-                var leaderboardlvl = ["is gay ", "is gay ", "is gay ", "is gay ", "is gay ", "is gay ", "is gay ", "is gay ", "is gay ", "is gay "]
-                var leaderboardxp = ["omegalul", "omegalul", "omegalul", "omegalul", "omegalul", "omegalul", "omegalul", "omegalul", "omegalul", "omegalul"]
-                var bestone = 0 //ok this value is the best user in the array. If the best user is in MemberInfo, then it's will be 4, well, than exactly that but you will understand later
-                Alvl = [] //Everyone's lvl
-                Axp = []//Everyone's xp
-                Aid = []//Everyone's id
-                for (var i = 0; i < MemberInfo.length; i++) { // that the same thing as rank
-                    UniqueMemberInfo = MemberInfo[i].split(separator)
-                    Aid.push(UniqueMemberInfo[0])
-                    Alvl.push(UniqueMemberInfo[1])
-                    Axp.push(UniqueMemberInfo[2])
-                }
-                for (var i = 0; i < 10; i++) {//10 for the 10 best users in the leaderboard.
-                    bestone = 0 //reseted
-
-                    for (var j = 0; j < Alvl.length; j++) {
-                        if (parseInt(Alvl[j]) < Alvl[bestone]) { } //If bestone has a better lvl than the current tested player , nothing to do
-                        else if (parseInt(Alvl[j]) == Alvl[bestone]) { //If bestone have the same lvl than the current tested player
-                            if (parseInt(Axp[j]) >= Axp[bestone]) { bestone = j }
-                        }// and if the current tested player have a better xp than bestone, he become bestone
-                        else { bestone = j }//and if the current tested player have a better lvl than bestone , he become the new bestone
-                    }
-
-                    if (Alvl.length !== 1) { //if there is still players to test, with your server it'll be always true
-                        console.log(Aid[bestone])
-                        leaderboarduser[i] = message.guild.members.find('id', Aid[bestone]).user.username //we get the username of the best player
-                        leaderboardlvl[i] = "lvl : " + Alvl[bestone] //we get the lvl of the player
-                        leaderboardxp[i] = "xp : " + Axp[bestone] // we get the xp of the player
-                        Aid.splice(bestone, 1) //and most important part we reomve from the list the best player so when we will find the second it will not be this best player again
-                        Alvl.splice(bestone, 1) //that why bestone will be the best player in MemberInfo the first time but the second the second time etc...
-                        Axp.splice(bestone, 1)
-                    }
-                    else { i = 10 } // if there is no longer players to test we stop here
-                }
-                var embed = new Discord.RichEmbed(); //a new embed
-                embed.addField("Leaderboard", //title of the first column
-                    "1  : " + leaderboarduser[0] + "\n" + //fthe usernames
-                    "2  : " + leaderboarduser[1] + "\n" +
-                    "3  : " + leaderboarduser[2] + "\n" +
-                    "4  : " + leaderboarduser[3] + "\n" +
-                    "5  : " + leaderboarduser[4] + "\n" +
-                    "6  : " + leaderboarduser[5] + "\n" +
-                    "7  : " + leaderboarduser[6] + "\n" +
-                    "8  : " + leaderboarduser[7] + "\n" +
-                    "9  : " + leaderboarduser[8] + "\n" +
-                    "10 : " + leaderboarduser[9]
-                    , true)
-
-                embed.addField("LVL",//title of the second column
-
-                    leaderboardlvl[0] + "\n" + //the lvls
-                    leaderboardlvl[1] + "\n" +
-                    leaderboardlvl[2] + "\n" +
-                    leaderboardlvl[3] + "\n" +
-                    leaderboardlvl[4] + "\n" +
-                    leaderboardlvl[5] + "\n" +
-                    leaderboardlvl[6] + "\n" +
-                    leaderboardlvl[7] + "\n" +
-                    leaderboardlvl[8] + "\n" +
-                    leaderboardlvl[9]
-                    , true)
-
-                embed.addField("XP",//title of the thrid column
-                    leaderboardxp[0] + "\n" +//the xp
-                    leaderboardxp[1] + "\n" +
-                    leaderboardxp[2] + "\n" +
-                    leaderboardxp[3] + "\n" +
-                    leaderboardxp[4] + "\n" +
-                    leaderboardxp[5] + "\n" +
-                    leaderboardxp[6] + "\n" +
-                    leaderboardxp[7] + "\n" +
-                    leaderboardxp[8] + "\n" +
-                    leaderboardxp[9]
-                    , true)
-                embed.setColor(0x35A7BF) //the color of the embed
-                message.channel.send("", embed) //we send the embed
-                break;
-
-            case "manualmemberaccountcreation": //You will need to do this command one time for adding every member to the database
-                if (sender.hasPermission("ADMINISTRATOR")) { //Only admins have the permission
-                    var EveryUserId = message.guild.members.keyArray() //message.guild.members.keyArray() this will give all users id
-                    for (var i = 0; i < EveryUserId.length; i++) { //Create every account
-                        MemberInfo[i] = EveryUserId[i] + separator + "1" + separator + "0"
-                    }
-                    message.channel.send("members succesfully added to database!");
-                }
-                break;
-
-
-            case "save":
-                if (sender.hasPermission("ADMINISTRATOR")) {
-                    var CompressedInfo = union(MemberInfo, separator2) //we take the MemberInfo array and transform it into a big string with members separated by separator2
-                    const fs = require('fs');
-                    fs.writeFile('savefile.txt', CompressedInfo, (err) => { //and then save it
-                        if (err) throw err;
-                        message.channel.send("Saved !")
-                    });
-                }
-                break;
-
-
-            default: //don't worry about this
-                message.channel.send("sorry this command is shit i can't understand it")
-        }
-    };
-
 });
 
 client.login(process.env.TOKEN); //Logs in using the token
 
 client.on("guildMemberAdd", (member) => { //IF someone join the server
     MemberInfo.push(member.user.id + separator + "1" + separator + "0") // we add his information to the database with a base lvl of 1 and xp of 0
-  });
+});
 
 //Controls the bot's answers to simple commands
 function chansmessages(usermessage) {
@@ -595,7 +578,7 @@ function union(Uarray, Usymbols) { // Uarray for the array we want to unify into
     for (var i = 1; i < Uarray.length; i++) {
         CompressedArray += Usymbols + Uarray[i];
     }
-        return CompressedArray // we send back the information
+    return CompressedArray // we send back the information
 }
   //End of level system functions
 
