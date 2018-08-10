@@ -136,7 +136,7 @@ exports.GetLeaderboard = function (message) {
     }
 
     if (Alvl.length !== 1) { //if there is still players to test, with your server it'll be always true
-      leaderboarduser[i] = message.guild.members.get(Aid[bestone]).user.username //we get the username of the best player
+      leaderboarduser[i] = message.guild.members.find('id', Aid[bestone]).user.username //we get the username of the best player
       leaderboardlvl[i] = "lvl : " + Alvl[bestone] //we get the lvl of the player
       leaderboardxp[i] = "xp : " + Axp[bestone] // we get the xp of the player
       Aid.splice(bestone, 1) //and most important part we reomve from the list the best player so when we will find the second it will not be this best player again
