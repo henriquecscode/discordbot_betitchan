@@ -230,7 +230,7 @@ client.on("message", (message) => { //When there is a message in the server, get
                         }
 
                         if (Alvl.length !== 1) { //if there is still players to test, with your server it'll be always true
-                            console.log(Aid[bestone])
+                            console.log("Leaderboard request");
                             leaderboarduser[i] = message.guild.members.find('id', Aid[bestone]).user.username //we get the username of the best player
                             leaderboardlvl[i] = "lvl : " + Alvl[bestone] //we get the lvl of the player
                             leaderboardxp[i] = "xp : " + Axp[bestone] // we get the xp of the player
@@ -527,7 +527,7 @@ client.on("guildMemberAdd", (member) => { //IF someone joins the server adds his
 
 client.on("guildMemberRemove", (member) => { //IF someone leaves the server removes his information from the savefile
   for(var i = 0; i < MemberInfo.length; i ++){
-      UniqueMemberInfo = MemberInfo.split(separator) //We check every profile
+      UniqueMemberInfo = MemberInfo[i].split(separator) //We check every profile
     if(UniqueMemberInfo[0] == member.user.id) {//And when we find the good one
       MemberInfo.splice(i, 1) // we remove his information
       i = MemberInfo.length
