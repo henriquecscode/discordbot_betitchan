@@ -28,7 +28,7 @@ client.on("message", (message) => { //When there is a message in the server, get
     //Commands
     if (message.content.startsWith(`${prefix}`)) { //Only executes if it is a message to the exp bot
 
-        let logchannel = message.guild.channels.find('id', '477146921618767893'); //Gets the logchannel of the current server by ID so it can output the log messages
+        let logchannel = message.guild.channels.find('name', 'betit_log'); //Gets the logchannel of the current server by ID so it can output the log messages
 
         let Smessage = message.content.trim().split(/ +/g); // This variable creates an array (Smessage) - trim() ensures there are no spaces before and after the text and spil(/ +/g) makes so the elements of the array are the words separated by one or more spaces
         let args = Smessage.slice(1); // This slices off the prefix in Smessage, only leaving the command and the arguments.
@@ -99,9 +99,10 @@ client.on("message", (message) => { //When there is a message in the server, get
 
                 case "help":
                     var allcommandsstring = "";
+                    var entertainercommands = entertainers.GetCommands();
                     message.channel.send(`${sender} Here is a list of what you can do`);
                     for (var i = 0; i < commands.length; i++) {
-                        allcommandsstring += "**" + commands[i][0] + "**" + " ~" + commands[i][1] + "~" + '\n'; //Makes so each new command is in bold, followed by its description and is succeeded by a new line
+                        allcommandsstring += "**" + entertainercommands[i][0] + "**" + " ~" + entertainercommands[i][1] + "~" + '\n'; //Makes so each new command is in bold, followed by its description and is succeeded by a new line
                     }
                     allcommandsstring += "Oni-Chan, these are all the bots the you can use Imada :3";
                     return message.channel.send(allcommandsstring);
