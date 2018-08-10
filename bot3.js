@@ -253,7 +253,7 @@ client.on("message", (message) => { //When there is a message in the server, get
             }
         }
 
-        //DELETE
+        //DELETE Giving an UnhandlePromiseRejectionWarning 
         else if (message.content.startsWith(`${prefix} delete`)) {
 
             async function deletemessages() { //Creates an async function so we can use the await command
@@ -453,7 +453,7 @@ client.on("message", (message) => { //When there is a message in the server, get
 
                     if (Alvl.length !== 1) { //if there is still players to test, with your server it'll be always true
                         console.log(Aid[bestone])
-                        leaderboarduser[i] = message.guild.members.get(Aid[bestone]).user.username //we get the username of the best player
+                        leaderboarduser[i] = message.guild.members.find('id', Aid[bestone].user.username //we get the username of the best player
                         leaderboardlvl[i] = "lvl : " + Alvl[bestone] //we get the lvl of the player
                         leaderboardxp[i] = "xp : " + Axp[bestone] // we get the xp of the player
                         Aid.splice(bestone, 1) //and most important part we reomve from the list the best player so when we will find the second it will not be this best player again
