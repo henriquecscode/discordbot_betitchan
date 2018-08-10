@@ -120,8 +120,8 @@ client.on("message", (message) => { //When there is a message in the server, get
         else if (message.content.length <= 40) { bonus = 1.1 } //same as before                 //You are free to change this
         else if (message.content.length <= 80) { bonus = 1.2 } //same as before
         else { bonus = 1.3 }//if someone post a message with more that 80 characters, he will have an xp boost of 1.3
-        console.log(bonus);
-        console.log(Math.ceil((Math.random() * 5 + lvl / 2) * bonus));
+        //console.log(bonus);
+        //console.log(Math.ceil((Math.random() * 5 + lvl / 2) * bonus));
         xp += Math.ceil((Math.random() * 5 + lvl / 2) * bonus) // xp gained algorithm, free to change this
         if (xp >= xplvlup) { // if you have enough xp to lvl up
             xp = xp - xplvlup // you lose the xp needed to level up
@@ -137,7 +137,7 @@ client.on("message", (message) => { //When there is a message in the server, get
     //Main commands -Henry
     if (message.content.startsWith(`${prefix}`)) { //Only executes if it is a message to the chan bot
 
-        let logchannel = message.guild.channels.find('name', 'betit_log'); //Gets the logchannel of the current server so it can output the log messages
+        let logchannel = message.guild.channels.find('id', '477146921618767893'); //Gets the logchannel of the current server by ID so it can output the log messages
 
         let cont = message.content.slice(prefix.length).split(" "); // This variable slices off the prefix, then puts the rest in an array based off the spaces
         let args = cont.slice(1); // This slices off the command in cont, only leaving the arguments.
@@ -253,7 +253,7 @@ client.on("message", (message) => { //When there is a message in the server, get
             }
         }
 
-        //DELETE Giving an UnhandlePromiseRejectionWarning 
+        //DELETE
         else if (message.content.startsWith(`${prefix} delete`)) {
 
             async function deletemessages() { //Creates an async function so we can use the await command
