@@ -521,9 +521,19 @@ client.on("message", (message) => { //When there is a message in the server, get
 
 client.login(process.env.TOKEN); //Logs in using the token
 
-client.on("guildMemberAdd", (member) => { //IF someone join the server
+client.on("guildMemberAdd", (member) => { //IF someone joins the server adds his information to the savefile
     MemberInfo.push(member.user.id + separator + "1" + separator + "0") // we add his information to the database with a base lvl of 1 and xp of 0
 });
+
+client.on("guildMemberRemove", (member) => { //IF someone leaves the server removes his information from the savefile
+  for(var i = 0; i < MemberInfo.length; i ++){
+      UniqueMemberInfo = MemberInfo.split(separator) //We check every profile
+    if(UniqueMemberInfo[0] == member.user.id) {//And when we find the good one
+      MemberInfo.splice(i, 1) // we remove his information
+      i = MemberInfo.length
+      }
+    }
+  });
 
 //Controls the bot's answers to simple commands
 function chansmessages(usermessage) {
