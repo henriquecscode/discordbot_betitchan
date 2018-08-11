@@ -26,13 +26,12 @@ exports.Load = function () { //Loads the info from the data file
   })
 };
 
-exports.Save = function(message){
+exports.Save = function(){
   console.log("Save request");
   var CompressedInfo = Union(MemberInfo, separator2) //we take the MemberInfo array and transform it into a big string with members separated by separator2
   const fs = require('fs');
   fs.writeFile('savefile.txt', CompressedInfo, (err) => { //and then save it
     if (err) throw err;
-    message.channel.send("Saved !")
   });
 }
 

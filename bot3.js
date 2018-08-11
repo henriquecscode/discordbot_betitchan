@@ -64,7 +64,8 @@ client.on("message", (message) => { //When there is a message in the server, get
 
                 case "save":
                     if (sender.hasPermission("ADMINISTRATOR")) {
-                        exp.Save(message);
+                        exp.Save();
+                        message.channel.send("Saved !");
                     }
                     break;
 
