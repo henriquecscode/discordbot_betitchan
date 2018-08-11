@@ -2,10 +2,11 @@ require('dotenv').load(); //DONT PASS THIS LINE INTO GLITCH.COM SINCE IT ALREADY
 
 console.log("Running"); //First thing that outputs in the console
 const Discord = require("discord.js");
+const client = new Discord.Client();
 const exp = require("./exp.js");
 const mod = require("./mod.js");
 const entertainers = require("./entertainers.js");
-const client = new Discord.Client();
+const welcome = require ("./welcome.js");
 
 var prefix = "test" //The prefix that must be inplace before every message. Change here if tired of previous one
 var prefixlenght = prefix.length
@@ -109,6 +110,23 @@ client.on("message", (message) => { //When there is a message in the server, get
                     return message.channel.send(allcommandsstring);
                 //Outputs the multiple commands: the first element of each row of the commands 2d array
 
+
+                case "admin": //Enables the calling of certain functions to debug and check problems
+                    if(sender.hasPermission("ADMINISTRATOR")){
+                        switch(Smessage[2]){
+                            case "exp.missingguildmemberremove":
+                                exp.MissingGuildMemberRemove();
+                                break;
+                            case "exp.duplicateddataremove":
+                                exp.DuplicatedDataRemove();
+                                break;  
+                        }
+                    }
+                    else{
+                        message.channel.send("This is an admin job. You are not allowed to do that");
+                    }
+                    break;
+
                 default:
                     entertainers.Othermessages(message, Smessage[1]);
                     break;
@@ -121,13 +139,20 @@ client.on("message", (message) => { //When there is a message in the server, get
 client.login(process.env.TOKEN); //Logs in using the token
 
 client.on("guildMemberAdd", (member) => { //IF someone joins the server adds his information to the savefile
-    console.log("Member joined the server");
-    exp.MemberAdd(member);
+    if(member.guild.id == 473162355128139776){ //Grants that we are talking about Stromi2Bee server
+        console.log("Member joined the server");
+        exp.MemberAdd(member.user.id); //Adds to the database
+
+        welcome.Welcomeimage(member) //Processes the member and sends the welcome image
+    }
+
 });
 
 client.on("guildMemberRemove", (member) => { //IF someone leaves the server removes his information from the savefile
-    console.log("Member left the server");
-    exp.MemberRemove();
+    if(member.guild.id == 392970070155984897){ //Grants that we are talking about Stromi2Bee server
+        console.log("Member left the server");
+        exp.MemberRemove(member.user.id);
+    }
   });
 
 

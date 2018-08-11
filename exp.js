@@ -197,20 +197,47 @@ exports.Create = function (message){
   console.log("EXP System creatd"); //Log in glitch.com
 }
 
-exports.MemberAdd = function (member){
-  MemberInfo.push(member.user.id + separator + "1" + separator + "0") // we add his information to the database with a base lvl of 1 and xp of 0
+exports.MemberAdd = function (memberid){
+  MemberInfo.push(memberid + separator + "1" + separator + "0") // we add his information to the database with a base lvl of 1 and xp of 0
   console.log("Member added to EXP System");
 }
 
-exports.MemberRemove = function (member) {
+exports.MemberRemove = function (memberid) {
   for (var i = 0; i < MemberInfo.length; i++) {
     UniqueMemberInfo = MemberInfo[i].split(separator) //We check every profile
-    if (UniqueMemberInfo[0] == member.user.id) {//And when we find the good one
+    if (UniqueMemberInfo[0] == memberid) {//And when we find the good one
       MemberInfo.splice(i, 1) // we remove his information
       i = MemberInfo.length //Ends the loop
     }
   }
   console.log("Member removed from EXP System");
+}
+
+exports.MissingGuildMemberRemove = async function(message){ //Removes the info relative to a member that is not in the server
+  var GuildMembers = message.guild.members
+  var extramembersids = []; //
+  for(var i = 0; i < Memberinfo.length;i ++){
+      message.guild.fetchMember(Memberinfo[i]) //Async function that returns a promise. If it succeeds we get a member object, if it fails (member was not found) it sends an error
+      .then((member) => { return;})//If the member was found you can end the function
+      .catch((err) => { //If there was an error aka there is no such member
+        MemberInfo.splice(i, 1); //Removes the user from the database
+        i--; //Has the array just got shorter, the next member has the same index (i-- i++)
+      })
+  }
+}
+
+exports.DuplicatedDataRemove = async function (){
+  NoDuplicatesMemberinfo  = [];
+  obj = {}; //Will be used to store the info of Memberinfo in an array
+
+  for (var i = 0; i < MemberInfo.length; i++){
+    obj[Memberinfo[i]] = 0; //GENIUS Same data will be added to the same index
+  }
+  for(var i in obj){
+    NoDuplicatesMemberinfo.push(i); //The data previously added is now pushed into the array
+  }
+  MemberInfo = NoDuplicatesMemberinfo;
+
 }
 
 function MemberInfoSet(id, set, string) { // Id is the id of the member , set is what you want to change : 0 for id, 1 for lvl and 2 for XP and string the new id, lvl or xp
