@@ -7,6 +7,7 @@ const exp = require("./exp.js");
 const mod = require("./mod.js");
 const entertainers = require("./entertainers.js");
 const welcome = require ("./welcome.js");
+const music = require ("./music");
 
 var prefix = "test" //The prefix that must be inplace before every message. Change here if tired of previous one
 var prefixlenght = prefix.length
@@ -40,7 +41,7 @@ client.on("message", (message) => { //When there is a message in the server, get
         */
 
         //No command
-        if (Smessage.length == 1) //The user has just put the prefix
+        if (!Smessage[1]) //The user has just put the prefix
         {
             return message.channel.send(`${sender} Don't know the commands Nii-Chan? Type **-chan Help** and it will tell you the common commands! Bakatshi o>o`);
         }
@@ -55,12 +56,6 @@ client.on("message", (message) => { //When there is a message in the server, get
 
                 case "leaderboard"://if leaderboard is used
                     exp.GetLeaderboard(message);
-                    break;
-
-                case "manualmemberaccountcreation": //You will need to do this command one time for adding every member to the database
-                    if (sender.hasPermission("ADMINISTRATOR")) { //Only admins have the permission
-                        exp.Create(message);
-                    }
                     break;
 
                 case "save":
@@ -99,6 +94,23 @@ client.on("message", (message) => { //When there is a message in the server, get
                     mod.removeRole(message, sender, logchannel);
                     break;
 
+            
+                case "play":
+                case "p": //This syntax allows to check both cases
+                console.log("Play Music request");
+                    music.MusicPlay(message, Smessage[2]);
+                    break;
+
+                case "skip":
+                console.log("Skip Music request");
+                    music.MusicSkip();
+                    break;
+
+                case "stop":
+                console.log("Stop Music Request");
+                    music.MusicStop(message);
+                    break;
+
                 case "help":
                     var allcommandsstring = "";
                     var entertainercommands = entertainers.GetCommands();
@@ -126,10 +138,18 @@ client.on("message", (message) => { //When there is a message in the server, get
                                 message.channel.send("Operation performed: exp backup load");
                                 console.log("Operation performed: backupload");
                                 break;
-                                
-                          default:
-                            message.channel.send("Command not recognized");
+
+                            case "exp.manualmemberaccountcreation": //You will need to do this command one time for adding every member to the database
+                                exp.Create(message);
+                                message.channel.send("Operation performed exp manual member account creation");
+                                console.log("Operation performed exp manual member account creation");
+                                break;
+
+                            default:
+                                return message.channel.send("Command not recognized");
+
                         }
+                        
                     }
                     else{
                         message.channel.send("This is an admin job. You are not allowed to do that");
