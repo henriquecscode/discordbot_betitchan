@@ -114,12 +114,21 @@ client.on("message", (message) => { //When there is a message in the server, get
                 case "admin": //Enables the calling of certain functions to debug and check problems
                     if(sender.hasPermission("ADMINISTRATOR")){
                         switch(Smessage[2]){
-                            case "exp.missingguildmemberremove":
-                                exp.MissingGuildMemberRemove();
+
+                            case "exp.logmemberinfo":
+                                exp.LogMemberInfo(logchannel);
+                                message.channel.send("Operation performed: exp log member info");
+                                console.log("Operation performed: log member info");
                                 break;
-                            case "exp.duplicateddataremove":
-                                exp.DuplicatedDataRemove();
-                                break;  
+
+                            case "exp.backupload":
+                                exp.Load("savefilebackup.txt");
+                                message.channel.send("Operation performed: exp backup load");
+                                console.log("Operation performed: backupload");
+                                break;
+                                
+                          default:
+                            message.channel.send("Command not recognized");
                         }
                     }
                     else{

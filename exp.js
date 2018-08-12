@@ -13,8 +13,8 @@ var separator = ","//the separator separate info (lvl, xp and user id) in the Me
 var separator2 = ";"//the separator2 separate members in the txt file
 //you should see the functions first!
 
-exports.Load = function () { //Loads the info from the data file
-  fs.readFile("savefile.txt", 'utf8', function (err, data) { //if you want information when the bot is off and get it back you need this
+exports.Load = function (savefile = "savefile.txt") { //Loads the info from the savefile, standardly is savefile.txt
+  fs.readFile(savefile, 'utf8', function (err, data) { //if you want information when the bot is off and get it back you need this
     if (err) throw err;//Probably throws the error away
     MemberInfo = data.split(separator2) //get an array from the stored string
 
@@ -135,9 +135,13 @@ exports.GetLeaderboard = function (message) {
     }
 
     if (Alvl.length !== 1) { //if there is still players to test, with your server it'll be always true
-      leaderboarduser[i] = message.guild.members.find('id', Aid[bestone]).user.username //we get the username of the best player
-      leaderboardlvl[i] = "lvl : " + Alvl[bestone] //we get the lvl of the player
-      leaderboardxp[i] = "xp : " + Axp[bestone] // we get the xp of the player
+      leaderboarduser[i] = message.guild.members.find('id', Aid[bestone]).nickname //we get the username of the best player
+      if(leaderboarduser[i] === null) { //The guild member has not changed is nickname on the server
+        leaderboarduser[i] = message.guild.members.find('id', Aid[bestone]).user.username //Displays his true name instead of his nickname
+      }
+      leaderboarduser[i] = `${i+1}: ${leaderboarduser[i]}`; //Gets the line for the leaderbord
+      leaderboardlvl[i] = "lvl : " + Alvl[bestone]; //we get the lvl of the player
+      leaderboardxp[i] = "xp : " + Axp[bestone]; // we get the xp of the player
       Aid.splice(bestone, 1) //and most important part we reomve from the list the best player so when we will find the second it will not be this best player again
       Alvl.splice(bestone, 1) //that why bestone will be the best player in MemberInfo the first time but the second the second time etc...
       Axp.splice(bestone, 1)
@@ -145,45 +149,9 @@ exports.GetLeaderboard = function (message) {
     else { i = 10 } // if there is no longer players to test we stop here
   }
   var embed = new Discord.RichEmbed(); //a new embed
-  embed.addField("Leaderboard", //title of the first column
-    "1  : " + leaderboarduser[0] + "\n" + //fthe usernames
-    "2  : " + leaderboarduser[1] + "\n" +
-    "3  : " + leaderboarduser[2] + "\n" +
-    "4  : " + leaderboarduser[3] + "\n" +
-    "5  : " + leaderboarduser[4] + "\n" +
-    "6  : " + leaderboarduser[5] + "\n" +
-    "7  : " + leaderboarduser[6] + "\n" +
-    "8  : " + leaderboarduser[7] + "\n" +
-    "9  : " + leaderboarduser[8] + "\n" +
-    "10 : " + leaderboarduser[9]
-    , true)
-
-  embed.addField("LVL",//title of the second column
-
-    leaderboardlvl[0] + "\n" + //the lvls
-    leaderboardlvl[1] + "\n" +
-    leaderboardlvl[2] + "\n" +
-    leaderboardlvl[3] + "\n" +
-    leaderboardlvl[4] + "\n" +
-    leaderboardlvl[5] + "\n" +
-    leaderboardlvl[6] + "\n" +
-    leaderboardlvl[7] + "\n" +
-    leaderboardlvl[8] + "\n" +
-    leaderboardlvl[9]
-    , true)
-
-  embed.addField("XP",//title of the thrid column
-    leaderboardxp[0] + "\n" +//the xp
-    leaderboardxp[1] + "\n" +
-    leaderboardxp[2] + "\n" +
-    leaderboardxp[3] + "\n" +
-    leaderboardxp[4] + "\n" +
-    leaderboardxp[5] + "\n" +
-    leaderboardxp[6] + "\n" +
-    leaderboardxp[7] + "\n" +
-    leaderboardxp[8] + "\n" +
-    leaderboardxp[9]
-    , true)
+  embed.addField("Leaderboard",leaderboarduser, true); //addField(name, vaule, inline);
+  embed.addField("LVL",leaderboardlvl, true);
+  embed.addField("XP",leaderboardxp, true);
   embed.setColor(0x35A7BF) //the color of the embed
   message.channel.send("", embed) //we send the embed
 }
@@ -213,31 +181,20 @@ exports.MemberRemove = function (memberid) {
   console.log("Member removed from EXP System");
 }
 
-exports.MissingGuildMemberRemove = async function(message){ //Removes the info relative to a member that is not in the server
-  var GuildMembers = message.guild.members
-  var extramembersids = []; //
-  for(var i = 0; i < Memberinfo.length;i ++){
-      message.guild.fetchMember(Memberinfo[i]) //Async function that returns a promise. If it succeeds we get a member object, if it fails (member was not found) it sends an error
-      .then((member) => { return;})//If the member was found you can end the function
-      .catch((err) => { //If there was an error aka there is no such member
-        MemberInfo.splice(i, 1); //Removes the user from the database
-        i--; //Has the array just got shorter, the next member has the same index (i-- i++)
-      })
+exports.LogMemberInfo = function(logchannel){
+  var loginfo = [];
+  for(var i in MemberInfo){
+    if(loginfo.length < 15){ //Only prints 15 member's info to safely keep below the 2000 characters message
+      loginfo.push(`${MemberInfo[i]} \n`);
+    }
+    else{
+      logchannel.send(`\`\`\`${loginfo}\`\`\``);
+      loginfo = [];
+    }
   }
-}
-
-exports.DuplicatedDataRemove = async function (){
-  NoDuplicatesMemberinfo  = [];
-  obj = {}; //Will be used to store the info of Memberinfo in an array
-
-  for (var i = 0; i < MemberInfo.length; i++){
-    obj[Memberinfo[i]] = 0; //GENIUS Same data will be added to the same index
+  if(loginfo.length != 0){//If Memberinfo.lenght != 0 there will still be information stored that we need to output
+  logchannel.send(`\`\`\` ${loginfo} \`\`\``); 
   }
-  for(var i in obj){
-    NoDuplicatesMemberinfo.push(i); //The data previously added is now pushed into the array
-  }
-  MemberInfo = NoDuplicatesMemberinfo;
-
 }
 
 function MemberInfoSet(id, set, string) { // Id is the id of the member , set is what you want to change : 0 for id, 1 for lvl and 2 for XP and string the new id, lvl or xp
