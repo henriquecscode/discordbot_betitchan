@@ -115,7 +115,7 @@ client.on("message", (message) => { //When there is a message in the server, get
                     var allcommandsstring = "";
                     var entertainercommands = entertainers.GetCommands();
                     message.channel.send(`${sender} Here is a list of what you can do`);
-                    for (var i = 0; i < commands.length; i++) {
+                    for (var i = 0; i < entertainercommands.length; i++) {
                         allcommandsstring += "**" + entertainercommands[i][0] + "**" + " ~" + entertainercommands[i][1] + "~" + '\n'; //Makes so each new command is in bold, followed by its description and is succeeded by a new line
                     }
                     allcommandsstring += "Oni-Chan, these are all the bots the you can use Imada :3";
@@ -154,6 +154,10 @@ client.on("message", (message) => { //When there is a message in the server, get
                     else{
                         message.channel.send("This is an admin job. You are not allowed to do that");
                     }
+                    break;
+
+                case "avatar":
+                    entertainers.GetAvatar(message);
                     break;
 
                 default:
