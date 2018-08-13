@@ -1,3 +1,5 @@
+const Discord = require("discord.js"); //To get the embeds (for glitch.com)
+
 commands = [
 
     [
