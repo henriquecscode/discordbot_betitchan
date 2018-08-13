@@ -7,7 +7,7 @@ const exp = require("./exp.js");
 const mod = require("./mod.js");
 const entertainers = require("./entertainers.js");
 const welcome = require ("./welcome.js");
-const music = require ("./music");
+const music = require ("./music.js");
 
 var prefix = "test" //The prefix that must be inplace before every message. Change here if tired of previous one
 var prefixlenght = prefix.length
@@ -55,7 +55,7 @@ client.on("message", (message) => { //When there is a message in the server, get
                     break;
 
                 case "leaderboard"://if leaderboard is used
-                    exp.GetLeaderboard(message);
+                    exp.CallGetLeaderboard(message);
                     break;
 
                 case "save":
@@ -180,7 +180,7 @@ client.on("guildMemberAdd", (member) => { //IF someone joins the server adds his
 client.on("guildMemberRemove", (member) => { //IF someone leaves the server removes his information from the savefile
     if(member.guild.id == 392970070155984897){ //Grants that we are talking about Stromi2Bee server
         console.log("Member left the server");
-        exp.MemberRemove(member.user.id);
+        exp.CallMemberRemove(member.user.id);
     }
   });
 

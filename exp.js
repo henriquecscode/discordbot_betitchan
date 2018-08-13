@@ -26,7 +26,7 @@ exports.Load = function (savefile = "savefile.txt") { //Loads the info from the 
   })
 };
 
-exports.Save = function(){
+exports.Save = function () {
   console.log("Save request");
   var CompressedInfo = Union(MemberInfo, separator2) //we take the MemberInfo array and transform it into a big string with members separated by separator2
   const fs = require('fs');
@@ -60,59 +60,98 @@ exports.AddExp = function (message) {
   }
 };
 
-exports.GetRank = function (message){
+exports.GetRank = function (message) {
 
-    var rank = 1 //your rank in the server is set to one
-      var MentionedUser //the user you mentionned in the message
-      var Title //the title of the embed
-      var thumbnail //the pfp
-      Alvl = [] //Everyone's lvl in an array
-      Axp = []//Everyone's xp in an array
+  var rank = 1 //your rank in the server is set to one
+  var MentionedUser //the user you mentionned in the message
+  var Title //the title of the embed
+  var thumbnail //the pfp
+  Alvl = [] //Everyone's lvl in an array
+  Axp = []//Everyone's xp in an array
 
-      if (message.mentions.users.firstKey() !== undefined) { //if someone is mentionned
-        MentionedUser = message.mentions.users.firstKey() //then we take his id
-        Title = "Stats of " + message.mentions.users.first().username //we set the title with his username
-        thumbnail = message.mentions.users.first().avatarURL //and his avatarURL
-      }
+  if (message.mentions.users.firstKey() !== undefined) { //if someone is mentionned
+    MentionedUser = message.mentions.users.firstKey() //then we take his id
+    Title = "Stats of " + message.mentions.users.first().username //we set the title with his username
+    thumbnail = message.mentions.users.first().avatarURL //and his avatarURL
+  }
 
-      else { //if not
-        MentionedUser = message.author.id //we take the id of the author of the comment
-        Title = "Your stats :"
-        thumbnail = message.author.avatarURL //and his avatarURL
-      }
+  else { //if not
+    MentionedUser = message.author.id //we take the id of the author of the comment
+    Title = "Your stats :"
+    thumbnail = message.author.avatarURL //and his avatarURL
+  }
 
-      lvl = parseInt(MemberInfoGet(MentionedUser, 1)) //We obtain the xp and lvl of the MentionedUser or the author if none
-      xp = parseInt(MemberInfoGet(MentionedUser, 2))
+  lvl = parseInt(MemberInfoGet(MentionedUser, 1)) //We obtain the xp and lvl of the MentionedUser or the author if none
+  xp = parseInt(MemberInfoGet(MentionedUser, 2))
 
-      for (var i = 0; i < MemberInfo.length; i++) { //for everyuser
-        UniqueMemberInfo = MemberInfo[i].split(separator) //we take their information
-        Alvl.push(UniqueMemberInfo[1]) //and we only take their xp and lvl
-        Axp.push(UniqueMemberInfo[2])
-      }
-      for (var i = 0; i < Alvl.length; i++) {//now we calcualte the rank of the user, if someone have higher lvl or same lvl or same lvl but higher xp, your gain one rank
-        if (lvl < Alvl[i]) { rank++ }
-        else if (lvl == Alvl[i]) {
-          if (xp < Axp[i]) { rank++ }
-        }
-      }
-      xplvlup = Math.pow(2 * lvl, 2) + 35 * lvl + 50 //we caculate the xp needed to lvl up
-      var embed = new Discord.RichEmbed(); //a new embed
-      embed.addField(Title, //the title of the embed
-        "lvl : " + lvl + "\n" + //your lvl
-        "xp : " + xp + "\n" +//your xp
-        "xp needed to lvl up : " + (xplvlup - xp) + "\n" + //the xp you have still to gain before lvl up
-        "rank in this server : " + rank + "/" + MemberInfo.length //and your rank
-      )
-      embed.setThumbnail(thumbnail) //the pfp
-      embed.setColor(0x35A7BF)  //the color of the embed
-      message.channel.send("", embed) //then we send it
+  for (var i = 0; i < MemberInfo.length; i++) { //for everyuser
+    UniqueMemberInfo = MemberInfo[i].split(separator) //we take their information
+    Alvl.push(UniqueMemberInfo[1]) //and we only take their xp and lvl
+    Axp.push(UniqueMemberInfo[2])
+  }
+  for (var i = 0; i < Alvl.length; i++) {//now we calcualte the rank of the user, if someone have higher lvl or same lvl or same lvl but higher xp, your gain one rank
+    if (lvl < Alvl[i]) { rank++ }
+    else if (lvl == Alvl[i]) {
+      if (xp < Axp[i]) { rank++ }
+    }
+  }
+  xplvlup = Math.pow(2 * lvl, 2) + 35 * lvl + 50 //we caculate the xp needed to lvl up
+  var embed = new Discord.RichEmbed(); //a new embed
+  embed.addField(Title, //the title of the embed
+    "lvl : " + lvl + "\n" + //your lvl
+    "xp : " + xp + "\n" +//your xp
+    "xp needed to lvl up : " + (xplvlup - xp) + "\n" + //the xp you have still to gain before lvl up
+    "rank in this server : " + rank + "/" + MemberInfo.length //and your rank
+  )
+  embed.setThumbnail(thumbnail) //the pfp
+  embed.setColor(0x35A7BF)  //the color of the embed
+  message.channel.send("", embed) //then we send it
 }
 
-exports.GetLeaderboard = function (message) {
+exports.CallGetLeaderboard = function (message) {
+  GetLeaderboard(message);
+}
+
+exports.Create = function (message) {
+  var EveryUserId = message.guild.members.keyArray() //message.guild.members.keyArray() this will give all users id
+  for (var i = 0; i < EveryUserId.length; i++) { //Create every account
+    MemberInfo[i] = EveryUserId[i] + separator + "1" + separator + "0"
+  }
+  message.channel.send("members succesfully added to database!");
+  console.log("EXP System creatd"); //Log in glitch.com
+}
+
+exports.MemberAdd = function (memberid) {
+  MemberInfo.push(memberid + separator + "1" + separator + "0") // we add his information to the database with a base lvl of 1 and xp of 0
+  console.log("Member added to EXP System");
+}
+
+exports.CallMemberRemove = function (memberid) { //Export function that calls the local one
+  MemberRemove(memberid);
+}
+
+
+exports.LogMemberInfo = function (logchannel) {
+  var loginfo = [];
+  for (var i in MemberInfo) {
+    if (loginfo.length < 15) { //Only prints 15 member's info to safely keep below the 2000 characters message
+      loginfo.push(`${MemberInfo[i]} \n`);
+    }
+    else {
+      logchannel.send(`\`\`\`${loginfo}\`\`\``);
+      loginfo = [];
+    }
+  }
+  if (loginfo.length != 0) {//If Memberinfo.lenght != 0 there will still be information stored that we need to output
+    logchannel.send(`\`\`\` ${loginfo} \`\`\``);
+  }
+}
+
+function GetLeaderboard(message) {
   console.log("Leaderboard request");
-  var leaderboarduser = ["","","","","","","","","",""] //This are the base value for the leaderboard if there is less than 10 members
-  var leaderboardlvl = ["","","","","","","","","",""]
-  var leaderboardxp = ["","","","","","","","","",""]
+  var leaderboarduser = ["", "", "", "", "", "", "", "", "", ""] //This are the base value for the leaderboard if there is less than 10 members
+  var leaderboardlvl = ["", "", "", "", "", "", "", "", "", ""]
+  var leaderboardxp = ["", "", "", "", "", "", "", "", "", ""]
   var bestone = 0 //ok this value is the best user in the array. If the best user is in MemberInfo, then it's will be 4, well, than exactly that but you will understand later
   Alvl = [] //Everyone's lvl
   Axp = []//Everyone's xp
@@ -135,42 +174,37 @@ exports.GetLeaderboard = function (message) {
     }
 
     if (Alvl.length !== 1) { //if there is still players to test, with your server it'll be always true
-      leaderboarduser[i] = message.guild.members.find('id', Aid[bestone]).nickname //we get the username of the best player
-      if(leaderboarduser[i] === null) { //The guild member has not changed is nickname on the server
-        leaderboarduser[i] = message.guild.members.find('id', Aid[bestone]).user.username //Displays his true name instead of his nickname
+      leaderboarduser[i] = message.guild.members.find('id', Aid[bestone]) //we get the member with that id
+      if (leaderboarduser[i] === null) { //If the user is not found for not being in the server
+        console.log("User not found");
+        MemberRemove(Aid[bestone]); //Remove the user from the data base
+        console.log("Removing from data base");
+        return GetLeaderboard(message); //Run the code again
       }
-      leaderboarduser[i] = `${i+1}: ${leaderboarduser[i]}`; //Gets the line for the leaderbord
-      leaderboardlvl[i] = "lvl : " + Alvl[bestone]; //we get the lvl of the player
-      leaderboardxp[i] = "xp : " + Axp[bestone]; // we get the xp of the player
-      Aid.splice(bestone, 1) //and most important part we reomve from the list the best player so when we will find the second it will not be this best player again
-      Alvl.splice(bestone, 1) //that why bestone will be the best player in MemberInfo the first time but the second the second time etc...
-      Axp.splice(bestone, 1)
+      else {
+        leaderboarduser[i] = leaderboarduser[i].nickname //we get the nickname of that member
+        if (leaderboarduser[i] === null) { //The guild member has not changed is nickname on the server
+          leaderboarduser[i] = message.guild.members.find('id', Aid[bestone]).user.username //Displays his true name instead of his nickname
+        }
+        leaderboarduser[i] = `${i + 1}: ${leaderboarduser[i]}`; //Gets the line for the leaderbord
+        leaderboardlvl[i] = "lvl : " + Alvl[bestone]; //we get the lvl of the player
+        leaderboardxp[i] = "xp : " + Axp[bestone]; // we get the xp of the player
+        Aid.splice(bestone, 1) //and most important part we reomve from the list the best player so when we will find the second it will not be this best player again
+        Alvl.splice(bestone, 1) //that why bestone will be the best player in MemberInfo the first time but the second the second time etc...
+        Axp.splice(bestone, 1)
+      }
     }
     else { i = 10 } // if there is no longer players to test we stop here
   }
   var embed = new Discord.RichEmbed(); //a new embed
-  embed.addField("Leaderboard",leaderboarduser, true); //addField(name, vaule, inline);
-  embed.addField("LVL",leaderboardlvl, true);
-  embed.addField("XP",leaderboardxp, true);
+  embed.addField("Leaderboard", leaderboarduser, true); //addField(name, vaule, inline);
+  embed.addField("LVL", leaderboardlvl, true);
+  embed.addField("XP", leaderboardxp, true);
   embed.setColor(0x35A7BF) //the color of the embed
   message.channel.send("", embed) //we send the embed
 }
 
-exports.Create = function (message){
-  var EveryUserId = message.guild.members.keyArray() //message.guild.members.keyArray() this will give all users id
-  for (var i = 0; i < EveryUserId.length; i++) { //Create every account
-    MemberInfo[i] = EveryUserId[i] + separator + "1" + separator + "0"
-  }
-  message.channel.send("members succesfully added to database!");
-  console.log("EXP System creatd"); //Log in glitch.com
-}
-
-exports.MemberAdd = function (memberid){
-  MemberInfo.push(memberid + separator + "1" + separator + "0") // we add his information to the database with a base lvl of 1 and xp of 0
-  console.log("Member added to EXP System");
-}
-
-exports.MemberRemove = function (memberid) {
+function MemberRemove(memberid) { //Removes the member from the data base
   for (var i = 0; i < MemberInfo.length; i++) {
     UniqueMemberInfo = MemberInfo[i].split(separator) //We check every profile
     if (UniqueMemberInfo[0] == memberid) {//And when we find the good one
@@ -179,22 +213,6 @@ exports.MemberRemove = function (memberid) {
     }
   }
   console.log("Member removed from EXP System");
-}
-
-exports.LogMemberInfo = function(logchannel){
-  var loginfo = [];
-  for(var i in MemberInfo){
-    if(loginfo.length < 15){ //Only prints 15 member's info to safely keep below the 2000 characters message
-      loginfo.push(`${MemberInfo[i]} \n`);
-    }
-    else{
-      logchannel.send(`\`\`\`${loginfo}\`\`\``);
-      loginfo = [];
-    }
-  }
-  if(loginfo.length != 0){//If Memberinfo.lenght != 0 there will still be information stored that we need to output
-  logchannel.send(`\`\`\` ${loginfo} \`\`\``); 
-  }
 }
 
 function MemberInfoSet(id, set, string) { // Id is the id of the member , set is what you want to change : 0 for id, 1 for lvl and 2 for XP and string the new id, lvl or xp
@@ -229,6 +247,6 @@ function Union(Uarray, Usymbols) { // Uarray for the array we want to unify into
   for (var i = 1; i < Uarray.length; i++) {
     CompressedArray += Usymbols + Uarray[i];
   }
-    return CompressedArray // we send back the information
+  return CompressedArray // we send back the information
 }
 
