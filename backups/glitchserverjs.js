@@ -34,8 +34,8 @@ app.get("/", (request, response) => {
 });
 app.listen(process.env.PORT);
 setInterval(() => {
-  http.get(http://${process.env.PROJECT_DOMAIN}.glitch.me/);
-  console.log(Keeping the bot alive); 
+  http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
+  console.log(`Keeping the bot alive`); 
   exp.Save();
 }, 280000);
 //Don't mess: Keep the bot alive in the hosting
