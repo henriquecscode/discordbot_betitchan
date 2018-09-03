@@ -2,6 +2,7 @@ require('dotenv').load(); //DONT PASS THIS LINE INTO GLITCH.COM SINCE IT ALREADY
 
 console.log("Running"); //First thing that outputs in the console
 const Discord = require("discord.js");
+const commando = require("discord.js-commando");
 const client = new Discord.Client();
 const exp = require("./exp.js");
 const mod = require("./mod.js");
@@ -97,7 +98,6 @@ client.on("message", (message) => { //When there is a message in the server, get
             
                 case "play":
                 case "p": //This syntax allows to check both cases
-                console.log("Play Music request");
                     music.MusicPlay(message, Smessage[2]);
                     break;
 
