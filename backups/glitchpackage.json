@@ -1,43 +1,33 @@
-// server.js
-// where your node app starts
-
-// init project
-
-const http = require('http');
-const express = require('express');
-const app = express();
-
-//Edit here
-//
-//
-//
-
-
-console.log("Running"); //First thing that outputs in the console
-const Discord = require("discord.js");
-const exp = require("./exp.js");
-const mod = require("./mod.js");
-const entertainers = require("./entertainers.js");
-const welcome = require ("./welcome.js");
-const music = require("./music.js");
-const client = new Discord.Client();
-
-
-//
-//
-//
-// Don't Edit here
-
-app.get("/", (request, response) => {
-  console.log(Date.now() + " Ping Received");
-  response.sendStatus(200);
-});
-app.listen(process.env.PORT);
-setInterval(() => {
-  http.get(http://${process.env.PROJECT_DOMAIN}.glitch.me/);
-  console.log(Keeping the bot alive); 
-  exp.Save();
-}, 280000);
-//Don't mess: Keep the bot alive in the hosting
-
-//EDIT FROM HERE
+{
+  "name": "Betit-chan",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.16.3",
+    "discord.js": "11.4.2",
+    "canvas": "2.0.0-alpha.13",
+    "snekfetch": "4.0.4",
+    "ffmpeg": "0.0.4",
+    "ffmpeg-binaries": "4.0.0",
+    "ytdl-core": "0.24.0",
+    "opusscript": "0.0.6",
+    "discord.js-music-v11": "1.3.4",
+    "discord.js-arbitrary-ffmpeg": "1.0.0"
+  },
+  "engines": {
+    "node": "8.x"
+  },
+  "repository": {
+    "url": "https://glitch.com/edit/#!/hello-express"
+  },
+  "license": "Private license",
+  "keywords": [
+    "node",
+    "glitch",
+    "express"
+  ]
+}
